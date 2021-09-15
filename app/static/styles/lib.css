@@ -1,0 +1,22 @@
+.clearfix::after {
+    content: ""; /* Генерируем пустой элемент */
+    clear: both; /* Отменяем обтекание*/
+    display: block; /* Блочный элемент */
+}
+
+.content {
+    box-sizing: border-box;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.container {
+    margin-left: auto;
+    margin-right: auto;
+
+    width: 1080px;
+}
+
+.color-accent {
+    color: #367DFF;
+}

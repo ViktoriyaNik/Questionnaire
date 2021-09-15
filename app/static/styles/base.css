@@ -1,0 +1,49 @@
+@import url('reset.css');
+
+body, html {
+    height: 100%;
+}
+
+body {
+   display: flex;
+   flex-direction: column;
+}
+
+.page-wrapper {
+   position: inherit;
+   flex: 1 0 auto;
+   background-color: #F3F3F3;
+}
+
+.layer {
+    background-color: #FFF;
+}
+
+.page {
+    height: inherit;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    row-gap: 50px;
+}
+
+.page-body {
+    width: 750px;
+}
+
+aside.menu {
+    width: 300px;
+}
+
+footer {
+   flex-shrink: 0;
+   background-color: #333333;
+}
+
+header {
+    position: inherit;
+    z-index: 1;
+    height: 55px;
+    background-color: #FFF;
+    box-shadow: 0 0 50px -20px rgba(0, 0, 0, 0.25);
+}
