@@ -7,4 +7,4 @@ from flask_login import current_user, login_user, login_required, logout_user
 @app.route('/')
 @app.route('/index')
 def index():
-    return '<h1>Прувет, медвед!</h1> <div><img src="http://risovach.ru/upload/2015/11/mem/medved-iz-kustov_97135269_orig_.png"></div>'
+    return render_template('base.html')
