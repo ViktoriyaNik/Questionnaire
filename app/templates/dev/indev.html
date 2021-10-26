@@ -1,0 +1,12 @@
+{% block indev %}
+
+                    <section id="indev" class="content-block">
+                        <link rel="stylesheet" href="{{ url_for('static', filename='dev/indev.css') }}">
+                        <div class="indev-block content-block">
+                            <h1>В разработке...</h1>
+                            <img src="{{ url_for('static', filename='dev/indev.svg') }}" style="margin-left: auto; margin-right: auto;" width="200px" height="200px" alt="">
+                            <h2>Ожидается содержание.</h2>
+                        </div>
+                    </section>
+
+{% endblock %}

@@ -1,3 +1,5 @@
+/*    ====   GOTHAM   ====    */
+
 @font-face { /* Gotham BLACK */
     font-family: 'Gotham';
     src: url('../resources/fonts/Gotham/Gotham-Black.eot');
@@ -34,3 +36,34 @@
     font-style: normal;
 }
 
+/*    ====   INTER   ====    */
+
+@font-face {
+    font-family: 'Inter';
+    src: url('../resources/fonts/Inter/Inter-Black.ttf') format('truetype');
+    font-weight: 900;
+}
+
+@font-face {
+    font-family: 'Inter';
+    src: url('../resources/fonts/Inter/Inter-Bold.ttf') format('truetype');
+    font-weight: 700;
+}
+
+@font-face {
+    font-family: 'Inter';
+    src: url('../resources/fonts/Inter/Inter-Medium.ttf') format('truetype');
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: 'Inter';
+    src: url(../resources/fonts/Inter/Inter-Regular.ttf) format('truetype');
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: 'Inter';
+    src: url(../resources/fonts/Inter/Inter-Light.ttf) format('truetype');
+    font-weight: 300;
+}

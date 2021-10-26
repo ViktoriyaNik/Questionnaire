@@ -1,10 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
 
-</body>
-</html>
+{% block content %}
+                    <!--    Test section    -->
+                    <h1>Заголовок Один</h1>
+                    <h2>Заголовок Два</h2>
+                    <p>Значения font-weight интерполируются  с помощью дискретных шагов (кратные 100). Интерполяция происходит в действительном пространстве чисел и превращается в целое число путём округления до ближайшего числа, кратного 100, со значениями посредине между кратными 100 округлёнными в сторону положительной бесконечности.</p>
+                    <form action="">
+                        <section class="question-box">
+                            <input type="text" class="input">
+                            <button class="button-submit">Отправить</button>
+                            <button class="button-add">1</button>
+                            <button class="button-add">2</button>
+                            <button class="button-add">+</button>
+                        </section>
+                    </form>
+                    <!--    End of test section    -->
+{% include '/dev/indev.html' %}
+{% endblock %}

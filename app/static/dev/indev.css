@@ -1,0 +1,16 @@
+.indev-block {
+     padding: 50px;
+     padding-left: 200px;
+     padding-right: 200px;
+     text-align: center;
+     width: fit-content;
+     margin-left: auto;
+     margin-right: auto;
+}
+
+.indev-block * {
+    line-height: 60px;
+    font-size: 50px;
+    color: #E3E3E3;
+    text-transform: uppercase;
+}

@@ -1,4 +1,6 @@
 @import url('reset.css');
+@import url('fonts.css');
+@import url('create.css');
 
 body, html {
     height: 100%;
@@ -9,18 +11,69 @@ body {
    flex-direction: column;
 }
 
+/*    ====   PAGE TEXT   ====    */
+
+.page h1, .page h2, .page h3 {
+    font-family: Inter;
+    line-height: 50px;
+}
+
+.page h1 {
+    font-size: 28px;
+    font-weight: 900;
+}
+
+.page h2 {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.page a, p, span {
+    font-family: Inter;
+    font-size: 16px;
+    font-weight: 300;
+}
+
+/*
+.layer {
+    background-color: #FFF;
+}
+*/
+
+/*    ====   HEADER   ====    */
+
+header {
+    position: relative;
+    z-index: 1;
+    height: 55px;
+    background-color: #FFF;
+    box-shadow: 0 0 50px -20px rgba(0, 0, 0, 0.25);
+}
+
+h1.logo {
+    font-family: 'Gotham';
+    font-size: 28px;
+    font-weight: 900;
+}
+
+h1.logo span.color-accent {
+    font-family: 'Gotham';
+    font-size: 28px;
+    font-weight: 900;
+}
+
+/*    ====   PAGE   ====    */
+
 .page-wrapper {
-   position: inherit;
+   display: grid;
+   grid-template-rows: min-content;
    flex: 1 0 auto;
    background-color: #F3F3F3;
 }
 
-.layer {
-    background-color: #FFF;
-}
-
 .page {
-    height: inherit;
+    z-index: 0;
+    height: 100%;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -29,21 +82,36 @@ body {
 
 .page-body {
     width: 750px;
+    background: #FFF;
 }
 
-aside.menu {
+/*    ====   ASIDE   ====    */
+
+.side-column {
     width: 300px;
 }
 
-footer {
-   flex-shrink: 0;
-   background-color: #333333;
+nav#menu {
+    background: #FFF;
+    width: 300px;
+    height: 190px;
 }
 
-header {
-    position: inherit;
-    z-index: 1;
-    height: 55px;
-    background-color: #FFF;
-    box-shadow: 0 0 50px -20px rgba(0, 0, 0, 0.25);
+.menu-button-group {
+    display: grid;
+    margin: auto;
+    row-gap: 16px;
+    width: 260px;
+}
+
+/*    ====   FOOTER   ====    */
+
+footer {
+    color: #FFF;
+    flex-shrink: 0;
+    background-color: #333333;
+}
+
+.name {
+    font-weight: bold;
 }

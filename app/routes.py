@@ -8,4 +8,19 @@ from flask_login import current_user, login_user, login_required, logout_user
 @app.route('/')
 @app.route('/index')
 def index():
-    return render_template('base.html')
+    return render_template('index.html')
+
+
+@app.route('/create/')  # если ссылка в элементе <button>, то почему-то необходимо добавлять '/' вконце
+def create():
+    return render_template('create.html')
+
+
+@app.route('/questionnaire/<test_id>')
+def questionnaire(test_id):
+    return render_template('questionnaire.html', test_id=test_id)
+
+
+@app.route('/statistics/<test_id>')
+def statistics(test_id):
+    return render_template('statistics.html', test_id=test_id)
