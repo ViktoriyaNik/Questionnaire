@@ -1,6 +1,61 @@
 {% extends 'base.html' %}
-
+{% block head %}
+                    <link rel="stylesheet" href="{{ url_for('static', filename='styles/create.css') }}">
+{% endblock %}
 {% block content %}
-<h1>{{ test_id }}</h1>
-{% include '/dev/indev.html' %}
+                    <!--    Test section    -->
+                    <div class="content-block">
+                        <div class="content-row">
+                            <h1>Создание опросника</h1>
+                            <p>
+                                Здесь вы можете создать свой собственный опросник.
+                                Для создания теста введите в поле имя автора любой псевдоним,
+                                а в поле возраст автора ваш достоверный возраст.
+                                <br><br>
+                                Любая указанная информация не имеет личностоного окраса, мы не собираем
+                                никакие конфеденциальные данные, любая информация собирается в обезличенном виде
+                                и используется только для ведения статистики.
+                            </p>
+                        </div>
+                            <form action="">
+                                <section class="section-author">
+                                    <div class="content-row">
+                                        <h2>Название теста</h2>
+                                        <input type="text" class="input">
+                                    </div>
+                                    <div class="content-row">
+                                        <h2>Имя автора</h2>
+                                        <input type="text" class="input">
+                                    </div>
+                                    <div class="content-row">
+                                        <h2>Возраст автора</h2>
+                                        <input type="text" class="input">
+                                    </div>
+                                </section>
+                                <section class="section-questions">
+                                    <div class="question-group">
+                                        <div class="question-block">
+                                            <h2>ВОПРОС 1.</h2>
+                                            <div class="content-row">
+                                                <h2>Заголовок вопроса</h2>
+                                                <input type="text" class="input">
+                                            </div>
+                                            <div class="content-row">
+                                                <h2>Текст вопроса</h2>
+                                                <textarea name="" id="" cols="30" rows="10" class="input area"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="content-row">
+                                            <button class="button-add">1</button>
+                                            <button class="button-add">+</button>
+                                            <button class="button-add button-add-disabled">+</button>
+                                            <button class="button-add button-add-disabled">+</button>
+                                            <button class="button-add button-add-disabled">+</button>
+                                        </div>
+                                    </div>
+                                </section>
+                            </form>
+                    </div>
+                    <!--    End of test section    -->
+
 {% endblock %}

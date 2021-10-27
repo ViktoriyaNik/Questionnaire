@@ -1,6 +1,5 @@
 @import url('reset.css');
 @import url('fonts.css');
-@import url('create.css');
 
 body, html {
     height: 100%;
@@ -50,6 +49,34 @@ header {
     box-shadow: 0 0 50px -20px rgba(0, 0, 0, 0.25);
 }
 
+header nav {
+    display: none;
+    float: right;
+    position: relative;
+    margin-left: auto;
+    right: 0px;
+}
+
+nav a {
+    color: #A3A3A3;
+    font-family: Inter;
+    font-size: 16px;
+    text-decoration: none;
+    margin-right: 30px;
+}
+
+nav a:last-child {
+    margin: 0;
+}
+
+nav a:hover {
+    color: #367DFF;
+}
+
+nav a:focus {
+    color: #A5C5FF;
+}
+
 h1.logo {
     font-family: 'Gotham';
     font-size: 28px;
@@ -85,15 +112,19 @@ h1.logo span.color-accent {
     background: #FFF;
 }
 
+/*    ====   CONTENT   ====    */
+
+
+
 /*    ====   ASIDE   ====    */
 
 .side-column {
+    overflow: hidden;
     width: 300px;
 }
 
 nav#menu {
     background: #FFF;
-    width: 300px;
     height: 190px;
 }
 
@@ -107,11 +138,41 @@ nav#menu {
 /*    ====   FOOTER   ====    */
 
 footer {
-    color: #FFF;
-    flex-shrink: 0;
+    color: #B3B3B3;
+    text-align: justify;
     background-color: #333333;
+}
+
+footer .page-body {
+    background-color: transparent;
 }
 
 .name {
     font-weight: bold;
+}
+
+/*    ====   ADAPTATION RULES   ====    */
+
+@media screen and (max-width: 1120px) {
+
+    .container {
+        width: auto;
+    }
+
+    .side-column {
+        display: none;
+    }
+
+    .page {
+        flex-direction: column-reverse;
+        row-gap: 0;
+    }
+
+    .page-body {
+        width: auto;
+    }
+
+    header nav {
+        display: initial;
+    }
 }

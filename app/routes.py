@@ -16,9 +16,13 @@ def create():
     return render_template('create.html')
 
 
+@app.route('/questionnaire/', defaults={'test_id': None})
 @app.route('/questionnaire/<test_id>')
 def questionnaire(test_id):
-    return render_template('questionnaire.html', test_id=test_id)
+    if  test_id:
+        return render_template('questionnaire.html', test_id=test_id)
+    else:
+        return render_template('questionnaire.html', test_id=test_id, questionnaire_list=['test0', 'test1', 'test2', 'test3'])
 
 
 @app.route('/statistics/<test_id>')

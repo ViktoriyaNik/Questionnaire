@@ -1,6 +1,10 @@
 {% extends 'base.html' %}
 
 {% block content %}
+{% if test_id %}
 <h1>{{ test_id }}</h1>
+{% else %}
+{% include 'questionnaire-list.html' %}
+{% endif %}
 {% include '/dev/indev.html' %}
 {% endblock %}

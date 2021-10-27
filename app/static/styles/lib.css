@@ -6,22 +6,25 @@
 
 /*    ====   CONTENT   ====    */
 
+.container {
+    margin-left: auto;
+    margin-right: auto;
+    width: 1080px;
+}
+
 .content {
     box-sizing: border-box;
     padding-left: 20px;
     padding-right: 20px;
 }
 
-.content-row {
+.content-block {
     margin-top: 50px;
     margin-bottom: 25px;
 }
 
-.container {
-    margin-left: auto;
-    margin-right: auto;
-
-    width: 1080px;
+.content-row {
+    margin-bottom: 25px;
 }
 
 .color-accent {
@@ -95,11 +98,24 @@
     outline: none;
 }
 
+.button-add:active {
+    background-color:#367DFF;
+    color: #FFF;
+}
+
+.button-add-disabled {
+    background-color: #F3F3F3;
+    color: #C4C4C4;
+    border: none;
+    pointer-events: none;
+}
+
 /*    ====   INPUTS   ====    */
 
 .input {
     height: 40px;
     box-sizing: border-box;
+    padding: 10px;
     line-height: 50px;
     font-family: Inter;
     font-weight: 500;
@@ -112,6 +128,13 @@
 .input:focus {
     box-shadow: 0 0 0 5px #A5C5FF;
     transition: 0.2s ease-in-out;
+}
+
+.area {
+    min-height: 200px;
+    min-width: 100%;
+    max-width: 100%;
+    line-height: initial;
 }
 
 /*    ====   STYLING   ====    */

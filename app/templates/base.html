@@ -2,9 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <!-- Рразобраться с viewport (тело застревает на 980px) -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Questionnaire</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/lib.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/base.css') }}">
+    {% block head %}
+    {% endblock %}
 </head>
 <body>
     <div class="page-wrapper">
@@ -12,6 +16,12 @@
             <div class="container vertical-align-wrapper">
                 <div class="header-bar content vertical-align-outer">
                     <h1 class="logo vertical-align-inner">Опросник<span class="color-accent">.</span>ру</h1>
+                    <nav class="vertical-align-inner">
+                        <a href="" class="">Создать тест</a>
+                        <a href="" class="">Все тесты</a>
+                        <a href="" class="">Статистика</a>
+                    </nav>
+
                 </div>
             </div>
         </header>
@@ -24,11 +34,11 @@
                     <!--    End of content section    -->
                 </div>
                 <aside class="side-column">
-                    <nav id="menu" class="float-box content-row vertical-align-wrapper">
+                    <nav id="menu" class="float-box content-block vertical-align-wrapper">
                         <div class="vertical-align-outer">
                             <div class="menu-button-group vertical-align-inner">
                                 <button class="button" onclick="window.location.href={{ url_for('create') }}">Создать тест</button>
-                                <button class="button" onclick="window.location.href=`{{ url_for('questionnaire', test_id='test_questionnaire') }}`">Все тесты</button>
+                                <button class="button" onclick="window.location.href=`{{ url_for('questionnaire') }}`">Все тесты</button>
                                 <button class="button" onclick="window.location.href=`{{ url_for('statistics', test_id='test_statistics') }}`">Статистика</button>
                             </div>
                         </div>
@@ -39,9 +49,18 @@
     </div>
     <footer>
         <div class="container">
-            <div class="content">
-                <div class="content-row">
+
+            <div class="content-block page-body">
+                <div class="content">
                     <p>Автор: <span class="name color-accent">Яцкова Виктория</span>, 5 группа, 3 курс, ФКН, ПИвИС, ВГУ</p>
+                    <p>
+                        Учебный проект по предмету "Проектирование Баз Данных", тема: Опросник. <br> <br>
+                        Текст задачи: <br>
+                        "Анкетирование (опрос)". Создайте веб-приложение для анонимного опроса.
+                        Предусмотреть интерфейс для создания опросов. Вопросы могут быть двух типов:
+                        1. С выбором только одного варианта ответа; <br>
+                        2. С выбором нескольких вариантов. <br>
+                    </p>
                 </div>
             </div>
         </div>

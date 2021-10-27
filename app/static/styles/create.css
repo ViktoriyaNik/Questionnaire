@@ -1,3 +1,13 @@
-@import url('fonts.css');
-@import url('base.css');
 
+.section-author {}
+
+.section-questions {}
+
+.question-group {}
+
+.question-block {}
+
+.section-author input,
+.section-questions input {
+    width: 100%;
+}
