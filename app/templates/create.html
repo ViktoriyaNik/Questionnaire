@@ -17,34 +17,69 @@
                                 и используется только для ведения статистики.
                             </p>
                         </div>
-                            <form action="">
+
+                            <form action="" method="POST">
+                                {{ form.hidden_tag() }}
                                 <section class="section-author">
                                     <div class="content-row">
-                                        <h2>Название теста</h2>
-                                        <input type="text" class="input">
+                                        <h2>{{ form.title.label }}</h2>
+                                        {% set errors = form.title.errors %}
+                                        {% if errors %}
+                                            {{ form.title(class="input invalid") }}
+                                            {% include 'warning_pane.html' %}
+                                        {% else %}
+                                            {{ form.title(class="input") }}
+                                        {% endif %}
                                     </div>
                                     <div class="content-row">
-                                        <h2>Имя автора</h2>
-                                        <input type="text" class="input">
+                                        <h2>{{ form.author_name.label }}</h2>
+                                        {% set errors = form.author_name.errors %}
+                                        {% if errors %}
+                                            {{ form.author_name(class="input invalid") }}
+                                            {% include 'warning_pane.html' %}
+                                        {% else %}
+                                            {{ form.author_name(class="input") }}
+                                        {% endif %}
                                     </div>
                                     <div class="content-row">
-                                        <h2>Возраст автора</h2>
-                                        <input type="text" class="input">
+                                        <h2>{{ form.author_birth.label }}</h2>
+                                        {% set errors = form.author_birth.errors %}
+                                        {% if errors %}
+                                            {{ form.author_birth(class="input invalid") }}
+                                            {% include 'warning_pane.html' %}
+                                        {% else %}
+                                            {{ form.author_birth(class="input") }}
+                                        {% endif %}
                                     </div>
                                 </section>
                                 <section class="section-questions">
                                     <div class="question-group">
-                                        <div class="question-block">
-                                            <h2>ВОПРОС 1.</h2>
-                                            <div class="content-row">
-                                                <h2>Заголовок вопроса</h2>
-                                                <input type="text" class="input">
+                                        {% for question in form.questions %}
+                                            <div class="question-block">
+                                                {{ question.hidden_tag() }}
+                                                <h2>ВОПРОС {{ loop.index }}.</h2>
+                                                <div class="content-row">
+                                                    <h2>{{ question.title.label }}</h2>
+                                                    {% set errors = question.title.errors %}
+                                                    {% if errors %}
+                                                        {{ question.title(class="input invalid") }}
+                                                        {% include 'warning_pane.html' %}
+                                                    {% else %}
+                                                        {{ question.title(class="input") }}
+                                                    {% endif %}
+                                                </div>
+                                                <div class="content-row">
+                                                    <h2>{{ question.text.label }}</h2>
+                                                    {% set errors = question.text.errors %}
+                                                    {% if errors %}
+                                                        {{ question.text(class="input invalid area", rows=10, cols=30) }}
+                                                        {% include 'warning_pane.html' %}
+                                                    {% else %}
+                                                        {{ question.text(class="input area", rows=10, cols=30) }}
+                                                    {% endif %}
+                                                </div>
                                             </div>
-                                            <div class="content-row">
-                                                <h2>Текст вопроса</h2>
-                                                <textarea name="" id="" cols="30" rows="10" class="input area"></textarea>
-                                            </div>
-                                        </div>
+                                        {% endfor %}
                                         <div class="content-row">
                                             <button class="button-add">1</button>
                                             <button class="button-add">+</button>
