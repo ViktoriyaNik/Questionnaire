@@ -13,6 +13,7 @@ def index():
 
 @app.route('/create/')  # если ссылка в элементе <button>, то почему-то необходимо добавлять '/' вконце
 def create():
+
     return render_template('create.html')
 
 
