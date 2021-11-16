@@ -17,15 +17,16 @@
                                 и используется только для ведения статистики.
                             </p>
                         </div>
-                            <form action="">
+                        {% include 'warning_pane.html' %}
+                            <form action="" method="POST">
                                 <section class="section-author">
                                     <div class="content-row">
                                         <h2>Название теста</h2>
-                                        <input type="text" class="input">
+                                        <input type="text" class="input" name="test_title">
                                     </div>
                                     <div class="content-row">
                                         <h2>Имя автора</h2>
-                                        <input type="text" class="input">
+                                        <input type="text" class="input" name="author_name">
                                     </div>
                                     <div class="content-row">
                                         <h2>Возраст автора</h2>

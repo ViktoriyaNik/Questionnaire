@@ -160,3 +160,10 @@
     margin-top: auto;
     margin-bottom: auto;
 }
+
+.warning-pane {
+    padding: 20px;
+
+    background-color: #FFC666;
+    border-radius: 10px;
+}

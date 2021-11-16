@@ -11,9 +11,13 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/create/')  # если ссылка в элементе <button>, то почему-то необходимо добавлять '/' вконце
+@app.route('/create/', methods=['POST', 'GET'])  # если ссылка в элементе <button>, то почему-то необходимо добавлять '/' вконце
 def create():
 
+    if request.method == 'POST':
+        #pipi = request.form['pipidastr']
+        name = request.form['author_name']
+        print(name) 
     return render_template('create.html')
 
 
