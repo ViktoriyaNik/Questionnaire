@@ -13,7 +13,7 @@ class QuestionField(FlaskForm):
     title   = StringField('Заголовок вопроса', validators=[input_required(), length(min=3, max=64)])
     text    = TextAreaField('Текст вопроса', validators=[length(max=512)])
 
-    variants         = FieldList(FormField(QuestionVariantField), min_entries=1)
+    #variants         = FieldList(FormField(QuestionVariantField), min_entries=1)
 
 
 class TestForm(FlaskForm):

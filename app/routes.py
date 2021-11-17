@@ -16,12 +16,39 @@ def index():
 @app.route('/create/', methods=['POST', 'GET'])  # если ссылка в элементе <button>, то почему-то необходимо добавлять '/' вконце
 def create():
     form = TestForm()
-    if request.method == 'POST':
-        #pipi = request.form['pipidastr']
-        name = request.form['author_name']
-        print(name) 
-    return render_template('create.html', form=form)
+    if form.validate_on_submit():
 
+        title = form.title.data
+        author_name = form.author_name.data
+        author_birth = form.author_birth.data
+
+        print('Form is submitted...')
+        print(title, author_name, author_birth, sep='\n')
+
+        questions = []
+        for question in form.questions:
+            questions.append(question.title.data)
+            questions.append(question.text.data)
+            print(question.title.data)
+            print(question.text.data)
+    else:
+        question_errors = []
+        for question in form.questions:
+            question_errors = [{'title': question.title.errors, 'text': question.text.errors}]
+
+        print('Form is not validated...')
+        print(form.errors)
+        print('Errors:')
+        print(form.title.errors)
+        print(form.author_name.errors)
+        print(form.author_birth.errors)
+
+        for i, question in enumerate(question_errors):
+            print(f'Question [{i}] errors:')
+            print(question.get('title'))
+            print(question.get('text'))
+
+    return render_template('create.html', form=form, errors=form.errors)
 
 @app.route('/questionnaire/', defaults={'test_id': None})
 @app.route('/questionnaire/<test_id>')

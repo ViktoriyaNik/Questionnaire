@@ -130,6 +130,12 @@
     transition: 0.2s ease-in-out;
 }
 
+.input.invalid {
+    box-shadow: none;
+    border: 2px solid #f25c54;
+    transition: 0.2s ease-in-out;
+}
+
 .area {
     min-height: 200px;
     min-width: 100%;
@@ -162,6 +168,7 @@
 }
 
 .warning-pane {
+    margin-top: 20px;
     padding: 20px;
 
     background-color: #FFC666;
