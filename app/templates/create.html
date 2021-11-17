@@ -19,33 +19,36 @@
                         </div>
                         {% include 'warning_pane.html' %}
                             <form action="" method="POST">
+                                {{ form.hidden_tag() }}
                                 <section class="section-author">
                                     <div class="content-row">
-                                        <h2>Название теста</h2>
-                                        <input type="text" class="input" name="test_title">
+                                        <h2>{{ form.title.label }}</h2>
+                                        {{ form.title(class="input") }}
                                     </div>
                                     <div class="content-row">
-                                        <h2>Имя автора</h2>
-                                        <input type="text" class="input" name="author_name">
+                                        <h2>{{ form.author_name.label }}</h2>
+                                        {{ form.author_name(class="input") }}
                                     </div>
                                     <div class="content-row">
-                                        <h2>Возраст автора</h2>
-                                        <input type="text" class="input">
+                                        <h2>{{ form.author_birth.label }}</h2>
+                                        {{ form.author_birth(class="input") }}
                                     </div>
                                 </section>
                                 <section class="section-questions">
                                     <div class="question-group">
+                                        {% for question in form.questions %}
                                         <div class="question-block">
-                                            <h2>ВОПРОС 1.</h2>
+                                            <h2>ВОПРОС {{ loop.index }}.</h2>
                                             <div class="content-row">
-                                                <h2>Заголовок вопроса</h2>
-                                                <input type="text" class="input">
+                                                <h2>{{ question.title.label }}</h2>
+                                                {{ question.title(class="input") }}
                                             </div>
                                             <div class="content-row">
-                                                <h2>Текст вопроса</h2>
-                                                <textarea name="" id="" cols="30" rows="10" class="input area"></textarea>
+                                                <h2>{{ question.text.label }}</h2>
+                                                {{ question.text(class="input area", rows=10, cols=30) }}
                                             </div>
                                         </div>
+                                        {% endfor %}
                                         <div class="content-row">
                                             <button class="button-add">1</button>
                                             <button class="button-add">+</button>

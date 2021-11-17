@@ -1,8 +1,10 @@
 from werkzeug.security import generate_password_hash
 from app import app, db
 from flask import render_template, redirect, url_for, flash, request
-from app import forms
+
 from flask_login import current_user, login_user, login_required, logout_user
+
+from app.forms import TestForm
 
 
 @app.route('/')
@@ -13,12 +15,12 @@ def index():
 
 @app.route('/create/', methods=['POST', 'GET'])  # если ссылка в элементе <button>, то почему-то необходимо добавлять '/' вконце
 def create():
-
+    form = TestForm()
     if request.method == 'POST':
         #pipi = request.form['pipidastr']
         name = request.form['author_name']
         print(name) 
-    return render_template('create.html')
+    return render_template('create.html', form=form)
 
 
 @app.route('/questionnaire/', defaults={'test_id': None})

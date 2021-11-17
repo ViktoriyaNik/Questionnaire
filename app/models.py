@@ -11,7 +11,7 @@ class Answer(db.Model):
 class Question(db.Model):
     id          = db.Column(db.Integer, nullable=False, primary_key=True, autoincrement=True)
     title       = db.Column(db.String(64), nullable=False)
-    description = db.Column(db.String(512))
+    text        = db.Column(db.String(512))
 
 
 class Type(db.Model):
@@ -51,6 +51,7 @@ def test():
 
 class Test(db.Model):
     id              = db.Column(db.Integer, nullable=False, primary_key=True, autoincrement=True)
+    title           = db.Column(db.String(64), nullable=False, unique=True)
     author_id       = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     creation_date   = db.Column(db.DateTime, nullable=False)
 
