@@ -31,24 +31,9 @@ def create():
             questions.append(question.text.data)
             print(question.title.data)
             print(question.text.data)
-    else:
-        question_errors = []
-        for question in form.questions:
-            question_errors = [{'title': question.title.errors, 'text': question.text.errors}]
-
-        print('Form is not validated...')
-        print(form.errors)
-        print('Errors:')
-        print(form.title.errors)
-        print(form.author_name.errors)
-        print(form.author_birth.errors)
-
-        for i, question in enumerate(question_errors):
-            print(f'Question [{i}] errors:')
-            print(question.get('title'))
-            print(question.get('text'))
 
     return render_template('create.html', form=form, errors=form.errors)
+
 
 @app.route('/questionnaire/', defaults={'test_id': None})
 @app.route('/questionnaire/<test_id>')
