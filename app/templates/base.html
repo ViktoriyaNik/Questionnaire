@@ -37,7 +37,7 @@
                     <nav id="menu" class="float-box content-block vertical-align-wrapper">
                         <div class="vertical-align-outer">
                             <div class="menu-button-group vertical-align-inner">
-                                <button class="button" onclick="window.location.href={{ url_for('create') }}">Создать тест</button>
+                                <button class="button" onclick="window.location.href=`{{ url_for('create') }}`">Создать тест</button>
                                 <button class="button" onclick="window.location.href=`{{ url_for('questionnaire') }}`">Все тесты</button>
                                 <button class="button" onclick="window.location.href=`{{ url_for('statistics', test_id='test_statistics') }}`">Статистика</button>
                             </div>
