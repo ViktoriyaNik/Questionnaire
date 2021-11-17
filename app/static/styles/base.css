@@ -12,6 +12,10 @@ body {
 
 /*    ====   PAGE TEXT   ====    */
 
+.page {
+    color: var(--foreground-font);
+}
+
 .page h1, .page h2, .page h3 {
     font-family: Inter;
     line-height: 50px;
@@ -37,19 +41,13 @@ body {
     font-weight: 500;
 }
 
-/*
-.layer {
-    background-color: #FFF;
-}
-*/
-
 /*    ====   HEADER   ====    */
 
 header {
     position: relative;
     z-index: 1;
     height: 55px;
-    background-color: #FFF;
+    background-color: var(--page-layer-0);
     box-shadow: 0 0 50px -20px rgba(0, 0, 0, 0.25);
 }
 
@@ -62,7 +60,7 @@ header nav {
 }
 
 nav a {
-    color: #A3A3A3;
+    color: var(--grayscale-4);
     font-family: Inter;
     font-size: 16px;
     text-decoration: none;
@@ -74,11 +72,11 @@ nav a:last-child {
 }
 
 nav a:hover {
-    color: #367DFF;
+    color: var(--foreground-accent);
 }
 
 nav a:focus {
-    color: #A5C5FF;
+    color: var(--background-accent);
 }
 
 h1.logo {
@@ -99,7 +97,7 @@ h1.logo span.color-accent {
    display: grid;
    grid-template-rows: min-content;
    flex: 1 0 auto;
-   background-color: #F3F3F3;
+   background-color: var(--page-layer-1);
 }
 
 .page {
@@ -114,7 +112,7 @@ h1.logo span.color-accent {
 .page-body {
     width: 750px;
     height: 100%;
-    background: #FFF;
+    background: var(--page-layer-0);
 }
 
 /*    ====   CONTENT   ====    */
@@ -129,7 +127,7 @@ h1.logo span.color-accent {
 }
 
 nav#menu {
-    background: #FFF;
+    background: var(--page-layer-0);
     height: 190px;
 }
 
@@ -143,9 +141,9 @@ nav#menu {
 /*    ====   FOOTER   ====    */
 
 footer {
-    color: #B3B3B3;
+    color: var(--grayscale-3);
     text-align: justify;
-    background-color: #333333;
+    background-color: var(--page-layer-2);
 }
 
 footer .page-body {
