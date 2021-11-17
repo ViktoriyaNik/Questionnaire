@@ -13,7 +13,7 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/create/', methods=['POST', 'GET'])  # если ссылка в элементе <button>, то почему-то необходимо добавлять '/' вконце
+@app.route('/create', methods=['POST', 'GET'])  # если ссылка в элементе <button>, то почему-то необходимо добавлять '/' вконце
 def create():
     form = TestForm()
     if form.validate_on_submit():
