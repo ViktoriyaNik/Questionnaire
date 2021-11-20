@@ -17,9 +17,11 @@ class QuestionField(FlaskForm):
 
 
 class TestForm(FlaskForm):
-    title      = StringField('Название теста', validators=[input_required(), length(min=5, max=64)])
+    title           = StringField('Название теста', validators=[input_required(), length(min=5, max=64)])
     author_name     = StringField('Имя автора', validators=[input_required(), length(min=3, max=64)])
     author_birth    = DateField('Дата рождения', validators=[input_required()])
 
     questions = FieldList(FormField(QuestionField), min_entries=1)  # TODO there is only ONE question
-    # questions.append_entry(None)
+
+    add_question    = SubmitField('+')
+    submit          = SubmitField('Отправить')

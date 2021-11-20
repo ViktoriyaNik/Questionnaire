@@ -83,10 +83,16 @@
                                         <div class="content-row">
                                             <button class="button-add">1</button>
                                             <button class="button-add">+</button>
+                                            {{ form.add_question(class="button-add") }}
                                             <button class="button-add button-add-disabled">+</button>
                                             <button class="button-add button-add-disabled">+</button>
                                             <button class="button-add button-add-disabled">+</button>
                                         </div>
+                                    </div>
+                                </section>
+                                <section>
+                                    <div class="content-row">
+                                        {{ form.submit(class="button-submit") }}
                                     </div>
                                 </section>
                             </form>

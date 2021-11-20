@@ -16,7 +16,9 @@ def index():
 @app.route('/create', methods=['POST', 'GET'])  # если ссылка в элементе <button>, то почему-то необходимо добавлять '/' вконце
 def create():
     form = TestForm()
-    if form.validate_on_submit():
+    if form.add_question.data:
+        add_question(form)
+    elif form.validate_on_submit():
 
         title = form.title.data
         author_name = form.author_name.data
@@ -33,6 +35,14 @@ def create():
             print(question.text.data)
 
     return render_template('create.html', form=form, errors=form.errors)
+
+
+from app.forms import QuestionField, FormField
+def add_question(form):
+    print('ENTRY APPENDED')
+    question_block = FormField(QuestionField)
+
+    form.questions.append_entry(question_block)
 
 
 @app.route('/questionnaire/', defaults={'test_id': None})
