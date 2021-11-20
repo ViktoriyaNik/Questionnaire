@@ -11,3 +11,7 @@
 .section-questions input {
     width: 100%;
 }
+
+.content-row .button-submit {
+    width: 100%;
+}
