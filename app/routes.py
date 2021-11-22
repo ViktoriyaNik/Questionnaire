@@ -16,8 +16,8 @@ def index():
 @app.route('/create', methods=['POST', 'GET'])  # если ссылка в элементе <button>, то почему-то необходимо добавлять '/' вконце
 def create():
     form = TestForm()
-    if form.add_question.data:
-        add_question(form)
+
+    if form.update_on_submit(): pass
     elif form.validate_on_submit():
 
         title = form.title.data
@@ -33,16 +33,34 @@ def create():
             questions.append(question.text.data)
             print(question.title.data)
             print(question.text.data)
+            print(question.answer_type.data)
+            variants = []
+            for variant in question.variants:
+                variants.append(variant.data)
+                print(variant.data)
 
     return render_template('create.html', form=form, errors=form.errors)
 
 
-from app.forms import QuestionField, FormField
-def add_question(form):
-    print('ENTRY APPENDED')
-    question_block = FormField(QuestionField)
+from app.models import question, test, type, question_list, user
+from sqlalchemy import insert, select
+def save_test_to_db(form):
+    sess = db.session
 
-    form.questions.append_entry(question_block)
+    title = form.title.data
+    author_name = form.author_name.data
+    author_birth = form.author_birth.data
+
+    questions = []
+    for question in form.questions:
+        title = question.title
+        text = question.text
+        answer_type = question.answer_type
+
+        stmt = insert(question).values(title=title, type=answer_type, text=text)
+
+    if sess.execute(select(user).where(name=author_name)):
+        pass
 
 
 @app.route('/questionnaire/', defaults={'test_id': None})

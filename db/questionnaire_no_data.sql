@@ -40,8 +40,11 @@ DROP TABLE IF EXISTS `question`;
 CREATE TABLE `question` (
   `id` int NOT NULL AUTO_INCREMENT,
   `title` varchar(64) NOT NULL,
-  `description` varchar(512) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `type_id` int NOT NULL,
+  `text` varchar(512) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `type_id` (`type_id`),
+  CONSTRAINT `question_ibfk_1` FOREIGN KEY (`type_id`) REFERENCES `type` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -54,14 +57,11 @@ DROP TABLE IF EXISTS `question_list`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `question_list` (
   `test_id` int NOT NULL,
-  `type_id` int NOT NULL,
   `question_id` int NOT NULL,
   KEY `test_id` (`test_id`),
-  KEY `type_id` (`type_id`),
   KEY `question_id` (`question_id`),
   CONSTRAINT `question_list_ibfk_1` FOREIGN KEY (`test_id`) REFERENCES `test` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `question_list_ibfk_2` FOREIGN KEY (`type_id`) REFERENCES `type` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `question_list_ibfk_3` FOREIGN KEY (`question_id`) REFERENCES `question` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `question_list_ibfk_2` FOREIGN KEY (`question_id`) REFERENCES `question` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -91,9 +91,11 @@ DROP TABLE IF EXISTS `test`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `test` (
   `id` int NOT NULL AUTO_INCREMENT,
+  `title` varchar(64) NOT NULL,
   `author_id` int NOT NULL,
   `creation_date` date NOT NULL,
   PRIMARY KEY (`id`),
+  UNIQUE KEY `title` (`title`),
   KEY `author_id` (`author_id`),
   CONSTRAINT `test_ibfk_1` FOREIGN KEY (`author_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -108,7 +110,7 @@ DROP TABLE IF EXISTS `type`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `type` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(8) DEFAULT NULL,
+  `name` varchar(32) DEFAULT NULL,
   `min_variants` tinyint unsigned NOT NULL,
   `max_variants` tinyint unsigned NOT NULL,
   PRIMARY KEY (`id`),
@@ -130,8 +132,12 @@ CREATE TABLE `user` (
   `date_of_birth` date NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping routines for database 'questionnaire'
+--
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -142,4 +148,4 @@ CREATE TABLE `user` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-11-15 17:51:56
+-- Dump completed on 2021-11-22  3:40:24
