@@ -6,23 +6,24 @@ from wtforms import StringField, TextAreaField, TimeField,\
 from wtforms.validators import email, length, input_required, data_required
 
 from app import db
-from app.models import type as type_
+from app.models import type_model
 from sqlalchemy import select, insert, update
 
 sess = db.session                       # Объект сессии бд
-stmt = select(type_)                    # Получение формулировки запроса
-resp = sess.execute(stmt).scalars()     # Возвращает сырые значения из объектов ответа Row
-
+stmt = select(type_model)               # Получение формулировки запроса
+resp = sess.execute(stmt).scalars()     # Возвращает итератор по сырым значениям из объектов ответа Row
+resp = [r for r in resp]                #
+print(resp)
+'''
 answer_types = {
     t.id: {
         'name': t.name,
         'min_variants': t.min_variants,
         'max_variants': t.max_variants
     } for t in resp}
+'''
 
-print(answer_types.get(1).get('name'))
-
-print(answer_types)
+variants = [(r.id, r.name) for r in resp]
 
 
 class QuestionVariantField(FlaskForm):
@@ -30,11 +31,11 @@ class QuestionVariantField(FlaskForm):
 
 
 class QuestionField(FlaskForm):
-    title       = StringField('Заголовок вопроса', validators=[input_required(), length(min=3, max=64)])
-    text        = TextAreaField('Текст вопроса', validators=[length(max=512)])
+    title           = StringField('Заголовок вопроса', validators=[input_required(), length(min=3, max=64)])
+    text            = TextAreaField('Текст вопроса', validators=[length(max=512)])
 
-    answer_type     = SelectField('Тип ответа', choices=answer_types, validators=[input_required()])
-    variants        = FieldList(StringField('Вариант ответа'), min_entries=1)
+    answer_type     = SelectField('Тип ответа', choices=variants, validators=[input_required()])
+    variants        = FieldList(StringField('Вариант ответа', validators=[input_required()]), min_entries=1)
 
     button_add_variant     = SubmitField('+')
 
@@ -51,6 +52,7 @@ class QuestionField(FlaskForm):
 class TestForm(FlaskForm):
     title           = StringField('Название теста', validators=[input_required(), length(min=5, max=64)])
     author_name     = StringField('Имя автора', validators=[input_required(), length(min=3, max=64)])
+    author_sex      = SelectField('Пол автора', choices=['МУЖ', 'ЖЕН'], validators=[input_required()])
     author_birth    = DateField('Дата рождения', validators=[input_required()])
 
     questions       = FieldList(FormField(QuestionField), min_entries=1)  # TODO there is only ONE question
