@@ -48,7 +48,7 @@
                                             {{ form.author_birth(class="input invalid") }}
                                             {% include 'warning_pane.html' %}
                                         {% else %}
-                                            {{ form.author_birth(class="input") }}
+                                            {{ form.author_birth(class="input", placeholder="YYYY-MM-DD") }}
                                         {% endif %}
                                     </div>
                                 </section>
@@ -69,6 +69,10 @@
                                                     {% endif %}
                                                 </div>
                                                 <div class="content-row">
+                                                    <h2>{{ question.answer_type.label }}</h2>
+                                                    {{ question.answer_type(class="input") }}
+                                                </div>
+                                                <div class="content-row">
                                                     <h2>{{ question.text.label }}</h2>
                                                     {% set errors = question.text.errors %}
                                                     {% if errors %}
@@ -78,15 +82,24 @@
                                                         {{ question.text(class="input area", rows=10, cols=30) }}
                                                     {% endif %}
                                                 </div>
+                                                <div class="content-row">
+                                                    {% for variant in question.variants %}
+                                                        <h2>{{ variant.label }} {{ loop.index }}</h2>
+                                                        {{ variant(class="input") }}
+                                                    {% endfor %}
+                                                </div>
+                                                <div class="content-row">
+                                                    <button class="button-add">1</button>
+                                                    {{ question.button_add_variant(class="button-add") }}
+                                                    <button class="button-add button-add-disabled">+</button>
+                                                    <button class="button-add button-add-disabled">+</button>
+                                                    <button class="button-add button-add-disabled">+</button>
+                                                </div>
                                             </div>
                                         {% endfor %}
                                         <div class="content-row">
-                                            <button class="button-add">1</button>
-                                            <button class="button-add">+</button>
-                                            {{ form.add_question(class="button-add") }}
-                                            <button class="button-add button-add-disabled">+</button>
-                                            <button class="button-add button-add-disabled">+</button>
-                                            <button class="button-add button-add-disabled">+</button>
+
+                                            {{ form.button_add_question(class="button-submit") }}
                                         </div>
                                     </div>
                                 </section>

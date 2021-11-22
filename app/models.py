@@ -11,14 +11,17 @@ class Answer(db.Model):
 class Question(db.Model):
     id          = db.Column(db.Integer, nullable=False, primary_key=True, autoincrement=True)
     title       = db.Column(db.String(64), nullable=False)
+    type_id     = db.Column(db.Integer, db.ForeignKey('type.id'), nullable=False)
     text        = db.Column(db.String(512))
 
 
 class Type(db.Model):
     id              = db.Column(db.Integer, nullable=False, primary_key=True, autoincrement=True)
-    name            = db.Column(db.String(8))
+    name            = db.Column(db.String(32))
     min_variants    = db.Column(db.SmallInteger, nullable=False)
     max_variants    = db.Column(db.SmallInteger, nullable=False)
+
+    questions       = db.relationship('Question', backref='type', lazy=True, cascade='all, delete')
 
 
 class User(db.Model):
@@ -40,15 +43,6 @@ class User(db.Model):
         return self.name
 
 
-def test():
-    s = db.session
-
-    stmt = db.select(User)
-    res = s.execute(stmt)
-    res = [row[0] for row in res]
-    return res
-
-
 class Test(db.Model):
     id              = db.Column(db.Integer, nullable=False, primary_key=True, autoincrement=True)
     title           = db.Column(db.String(64), nullable=False, unique=True)
@@ -68,6 +62,14 @@ result = db.Table(
 question_list = db.Table(
     'question_list',
     db.Column('test_id', db.Integer, db.ForeignKey('test.id'), nullable=False),  # TODO
-    db.Column('type_id', db.Integer, db.ForeignKey('type.id'), nullable=False),  # TODO
     db.Column('question_id', db.Integer, db.ForeignKey('question.id'), nullable=False)
 )
+
+
+# Приведение названий моделей к именам таблиц в базе данных
+
+test        = Test
+user        = User
+type        = Type
+question    = Question
+answer      = Answer
