@@ -16,51 +16,62 @@ def index():
 @app.route('/create', methods=['POST', 'GET'])  # если ссылка в элементе <button>, то почему-то необходимо добавлять '/' вконце
 def create():
     form = TestForm()
-
+    print('Count of questions:', len(form.questions))
+    print('Count of variants in question 1:', len(form.questions[0].variants))
     if form.update_on_submit(): pass
     elif form.validate_on_submit():
-
-        title = form.title.data
-        author_name = form.author_name.data
-        author_birth = form.author_birth.data
-
-        print('Form is submitted...')
-        print(title, author_name, author_birth, sep='\n')
-
-        questions = []
-        for question in form.questions:
-            questions.append(question.title.data)
-            questions.append(question.text.data)
-            print(question.title.data)
-            print(question.text.data)
-            print(question.answer_type.data)
-            variants = []
-            for variant in question.variants:
-                variants.append(variant.data)
-                print(variant.data)
-
+        save_test_to_db(form)
     return render_template('create.html', form=form, errors=form.errors)
 
 
-from app.models import question, test, type, question_list, user
-from sqlalchemy import insert, select
+from app.models import question_model, answer_model, test_model, type_model, user_model
+from sqlalchemy import insert, select, exists
 def save_test_to_db(form):
     sess = db.session
+    #try:
+    test_title      = form.title.data
+    author_name     = form.author_name.data
+    author_sex      = form.author_sex.data
+    author_birth    = form.author_birth.data
 
-    title = form.title.data
-    author_name = form.author_name.data
-    author_birth = form.author_birth.data
+    # Если такой пользователь существует, взять из бд, если нет - создать
+    if sess.query(exists().where(user_model.name == author_name)).scalar():
+        stmt = select(user_model).where(user_model.name == author_name)
+        author_db = sess.execute(stmt).scalar()
+    else:
+        author_db = user_model(name=author_name, sex=author_sex, date_of_birth=author_birth)
+        sess.add(author_db)
+        sess.commit()
+
+    test_db         = test_model(title=test_title, author=author_db)
 
     questions = []
-    for question in form.questions:
-        title = question.title
-        text = question.text
-        answer_type = question.answer_type
+    for question_form in form.questions:
+        question_title          = question_form.title.data
+        question_text           = question_form.text.data
+        question_answer_type    = question_form.answer_type.data
 
-        stmt = insert(question).values(title=title, type=answer_type, text=text)
+        question_db             = question_model(
+            type_id=question_answer_type,
+            test=test_db,
+            title=question_title,
+            text=question_text if question_text else None)
 
-    if sess.execute(select(user).where(name=author_name)):
-        pass
+        sess.add(question_db)
+        sess.commit()
+
+        for variant in question_form.variants:
+            answer_value    = variant.data
+
+            answer_db        = answer_model(value=answer_value, prepared=True)
+            question_db.answers.append(answer_db)
+            sess.add(answer_db)
+            sess.commit()
+
+    #except Exception:
+    #    print('Error while adding changes to Data Base!')
+    #    sess.rollback()
+
 
 
 @app.route('/questionnaire/', defaults={'test_id': None})

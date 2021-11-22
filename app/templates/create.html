@@ -42,6 +42,10 @@
                                         {% endif %}
                                     </div>
                                     <div class="content-row">
+                                        <h2>{{ form.author_sex.label }}</h2>
+                                        {{ form.author_sex(class="input") }}
+                                    </div>
+                                    <div class="content-row">
                                         <h2>{{ form.author_birth.label }}</h2>
                                         {% set errors = form.author_birth.errors %}
                                         {% if errors %}
