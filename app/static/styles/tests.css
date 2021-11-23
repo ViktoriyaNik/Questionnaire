@@ -1,0 +1,37 @@
+ul.list {
+
+}
+
+li.list-row {
+    border-bottom: 1px solid var(--page-layer-1);
+}
+
+li.list-row:last-child {
+    border-bottom: none;
+}
+
+
+li.list-row.test-row {
+
+}
+
+li.list-row.test-row h3.test-title {
+    max-width: fit-content;
+    white-space: nowrap; /* Отменяем перенос текста */
+    overflow: hidden; /* Обрезаем содержимое */
+    text-overflow: ellipsis; /* Многоточие */
+}
+
+.test-info {
+    float: right;
+    display: flex;
+    margin-left: auto;
+}
+
+.test-info > * {
+    margin-left: 50px;
+} .test-info *:first-child {margin-left: 0;}
+
+.test-info p {
+    color: var(--grayscale-2);
+}

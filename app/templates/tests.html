@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/tests.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="content-block">
+    {% if test_id %}
+        <div class="content-row">
+            <h1>Тест номер: {{ test_id }}</h1>
+        </div>
+    {% else %}
+    <div class="content-block">
+        <div class="content-row">
+            <h1>Список тестов</h1>
+            <ul class="list">
+                {% for test in test_list %}
+                    <li class="list-row test-row vertical-align-wrapper">
+                        <div class="vertical-align-outer">
+                            <h3 class="test-title vertical-align-inner">{{ test.title }}</h3>
+                            <div class="test-info vertical-align-inner">
+                                <p>вопр: {{ test.questions.count() }}</p>
+                                <p>от: {{ test.author }}</p>
+                                <p>создан: {{ test.creation_date }}</p>
+                            </div>
+                        </div>
+
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

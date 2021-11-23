@@ -73,16 +73,26 @@ def save_test_to_db(form):
     #    sess.rollback()
 
 
-
-@app.route('/questionnaire/', defaults={'test_id': None})
-@app.route('/questionnaire/<test_id>')
-def questionnaire(test_id):
+@app.route('/tests')
+@app.route('/tests/<test_id>')
+def tests(test_id=None):
     if  test_id:
-        return render_template('questionnaire.html', test_id=test_id)
+        return render_template('tests.html', test_id=test_id)
     else:
-        return render_template('questionnaire.html', test_id=test_id, questionnaire_list=['test0', 'test1', 'test2', 'test3'])
+        sess = db.session
+        stmt = select(test_model)
+        resp = sess.execute(stmt).scalars()
+        test_list = [r for r in resp]
+        return render_template('tests.html', test_id=test_id,
+                               test_list=test_list
+                               #[
+                               #    test_model(id=1, title='Тестовое название 1', author_id=1, creation_date='2021-11-11'),
+                               #    test_model(id=2, title='Тестовое название 2', author_id=2, creation_date='2021-11-11'),
+                               #    test_model(id=3, title='Тестовое название 3', author_id=1, creation_date='2021-11-11')]
+                               )
 
 
+@app.route('/statistics')
 @app.route('/statistics/<test_id>')
-def statistics(test_id):
+def statistics(test_id=None):
     return render_template('statistics.html', test_id=test_id)
