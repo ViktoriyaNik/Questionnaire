@@ -26,11 +26,7 @@ answer_types = {
 variants = [(r.id, r.name) for r in resp]
 
 
-class QuestionVariantField(FlaskForm):
-    variant = StringField('Вариант')
-
-
-class QuestionField(FlaskForm):
+class CreateQuestionField(FlaskForm):
     title           = StringField('Заголовок вопроса', validators=[input_required(), length(min=3, max=64)])
     text            = TextAreaField('Текст вопроса', validators=[length(max=512)])
 
@@ -49,13 +45,13 @@ class QuestionField(FlaskForm):
         self.variants.append_entry()
 
 
-class TestForm(FlaskForm):
+class CreateTestForm(FlaskForm):
     title           = StringField('Название теста', validators=[input_required(), length(min=5, max=64)])
     author_name     = StringField('Имя автора', validators=[input_required(), length(min=3, max=64)])
     author_sex      = SelectField('Пол автора', choices=['МУЖ', 'ЖЕН'], validators=[input_required()])
     author_birth    = DateField('Дата рождения', validators=[input_required()])
 
-    questions       = FieldList(FormField(QuestionField), min_entries=1)  # TODO there is only ONE question
+    questions       = FieldList(FormField(CreateQuestionField), min_entries=1)  # TODO there is only ONE question
 
     button_add_question    = SubmitField('Добавить вопрос')
 
@@ -74,5 +70,17 @@ class TestForm(FlaskForm):
 
     def add_question(self):
         print('QUESTION APPENDED')
-        question_block = FormField(QuestionField)
+        question_block = FormField(CreateQuestionField)
         self.questions.append_entry(question_block)
+
+
+class GetTestedQuestionField(FlaskForm):
+    def __init__(self, question):
+        self.title      = question.title
+        self.answers    = FieldList(StringField(''))
+
+
+class GetTestedForm(FlaskForm):
+    def __init__(self, test_db):
+        self.author = test_db.author
+        self.creation_date = test_db.creation_date

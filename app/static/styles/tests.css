@@ -1,9 +1,15 @@
-ul.list {
+li.list-row a {
+    text-decoration: none;
+    color: var(--page-layer-2)
+}
 
+li.list-row:hover a {
+    color: var(--foreground-accent);
 }
 
 li.list-row {
     border-bottom: 1px solid var(--page-layer-1);
+    transition: 0.3s ease-in-out;
 }
 
 li.list-row:last-child {

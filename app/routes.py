@@ -1,10 +1,9 @@
-from werkzeug.security import generate_password_hash
 from app import app, db
 from flask import render_template, redirect, url_for, flash, request
-
+from werkzeug.security import generate_password_hash
 from flask_login import current_user, login_user, login_required, logout_user
 
-from app.forms import TestForm
+from app.forms import CreateTestForm
 
 
 @app.route('/')
@@ -13,14 +12,15 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/create', methods=['POST', 'GET'])  # если ссылка в элементе <button>, то почему-то необходимо добавлять '/' вконце
+@app.route('/create', methods=['POST', 'GET'])
 def create():
-    form = TestForm()
+    form = CreateTestForm()
     print('Count of questions:', len(form.questions))
     print('Count of variants in question 1:', len(form.questions[0].variants))
     if form.update_on_submit(): pass
     elif form.validate_on_submit():
         save_test_to_db(form)
+        return redirect(url_for('tests'))
     return render_template('create.html', form=form, errors=form.errors)
 
 
@@ -36,16 +36,15 @@ def save_test_to_db(form):
 
     # Если такой пользователь существует, взять из бд, если нет - создать
     if sess.query(exists().where(user_model.name == author_name)).scalar():
-        stmt = select(user_model).where(user_model.name == author_name)
-        author_db = sess.execute(stmt).scalar()
+        stmt        = select(user_model).where(user_model.name == author_name)
+        author_db   = sess.execute(stmt).scalar()
     else:
         author_db = user_model(name=author_name, sex=author_sex, date_of_birth=author_birth)
         sess.add(author_db)
         sess.commit()
 
-    test_db         = test_model(title=test_title, author=author_db)
+    test_db = test_model(title=test_title, author=author_db)
 
-    questions = []
     for question_form in form.questions:
         question_title          = question_form.title.data
         question_text           = question_form.text.data
@@ -77,19 +76,17 @@ def save_test_to_db(form):
 @app.route('/tests/<test_id>')
 def tests(test_id=None):
     if  test_id:
-        return render_template('tests.html', test_id=test_id)
+        form = CreateTestForm()
+
+        return render_template('test.html', test_id=test_id)
     else:
         sess = db.session
         stmt = select(test_model)
         resp = sess.execute(stmt).scalars()
         test_list = [r for r in resp]
-        return render_template('tests.html', test_id=test_id,
-                               test_list=test_list
-                               #[
-                               #    test_model(id=1, title='Тестовое название 1', author_id=1, creation_date='2021-11-11'),
-                               #    test_model(id=2, title='Тестовое название 2', author_id=2, creation_date='2021-11-11'),
-                               #    test_model(id=3, title='Тестовое название 3', author_id=1, creation_date='2021-11-11')]
-                               )
+
+        # По идее test_id отсюда можно убрать
+        return render_template('tests.html', test_id=test_id, test_list=test_list)
 
 
 @app.route('/statistics')

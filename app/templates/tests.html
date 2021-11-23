@@ -17,14 +17,16 @@
             <ul class="list">
                 {% for test in test_list %}
                     <li class="list-row test-row vertical-align-wrapper">
-                        <div class="vertical-align-outer">
-                            <h3 class="test-title vertical-align-inner">{{ test.title }}</h3>
-                            <div class="test-info vertical-align-inner">
-                                <p>вопр: {{ test.questions.count() }}</p>
-                                <p>от: {{ test.author }}</p>
-                                <p>создан: {{ test.creation_date }}</p>
+                        <a href="{{ url_for('tests', test_id=test.id) }}">
+                            <div class="vertical-align-outer">
+                                <h3 class="test-title vertical-align-inner">{{ test.title }}</h3>
+                                <div class="test-info vertical-align-inner">
+                                    <p>вопр: {{ test.questions.count() }}</p>
+                                    <p>от: {{ test.author }}</p>
+                                    <p>создан: {{ test.creation_date }}</p>
+                                </div>
                             </div>
-                        </div>
+                        </a>
 
                     </li>
                 {% endfor %}
