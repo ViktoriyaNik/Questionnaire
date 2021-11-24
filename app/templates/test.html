@@ -21,11 +21,11 @@
                 {% endif %}
             </div>
             <ul class="answer-list">
-                {% for answer in question.answers %}
+                {% for variant in question.answers.variants %}
                     <li class="answer-variant">
-                        <h2>{{ answer.label }}</h2>
+                        <h2>{{ variant.label }}</h2>
                         {# answer(class='input area') #}
-                        {{ answer() }}
+                        {{ variant }}
                     </li>
                 {% endfor %}
             </ul>
