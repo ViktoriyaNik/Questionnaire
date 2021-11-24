@@ -6,30 +6,56 @@
 
 {% block content %}
     <div class="content-block">
-        <section class="test-block">
-            <h1>{{ form.title }}</h1>
-            <p>Автор теста: {{ form.author }}</p>
-            <p>Дата создания: {{ form.creation_date }}</p>
-        </section>
-        <section class="questions-block">
-            {% for question in form.questions %}
+        <section class="description-block">
             <div class="content-row">
-                <h1> {{ loop.index }}. {{ question.title }} </h1>
-                <p> {{ question.type.name }} </p>
-                {% if question.text %}
-                <p> {{ question.text }} </p>
-                {% endif %}
+                <h1>{{ form.title }}</h1>
+                <p>Автор теста: {{ form.author }}</p>
+                <p>Дата создания: {{ form.creation_date }}</p>
             </div>
-            <ul class="answer-list">
-                {% for variant in question.answers.variants %}
-                    <li class="answer-variant">
-                        <h2>{{ variant.label }}</h2>
-                        {# answer(class='input area') #}
-                        {{ variant }}
-                    </li>
-                {% endfor %}
-            </ul>
+        </section>
+        <form action="" method="POST">
+            <section class="questions-block">
+            {% for question in form.questions %}
+                {% set type_id = question.type.id %}
+                <div class="content-row">
+                    <h1> {{ loop.index }}. {{ question.title }} </h1>
+                    {% if question.text %}
+                    <p> {{ question.text }} </p>
+                    {% endif %}
+                    <p>
+                        <strong>Тип ответа:</strong>
+                        <span class="answer-type">{{ question.type.name }}</span>
+                    </p>
+                </div>
+                {% if type_id == 1 %}
+                    {% set variant = question.answers.variants[0] %}
+                    {{ variant(class="content-row") }}
+                {% elif type_id == 2 %}
+                    <ul class="answer-list content-row">
+                        {% for variant in question.answers.variants %}
+                            <li class="answer-variant">
+                                <h2>{{ variant.label }}</h2>
+                                {{ variant }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% elif type_id == 3 %}
+                    <ul class="answer-list content-row">
+                        {% for variant in question.answers.variants %}
+                            <li class="answer-variant">
+                                <h2>{{ variant.label }}</h2>
+                                {{ variant(class="input area") }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
             {% endfor %}
         </section>
+            <section class="action-block">
+            <div class="content-row">
+                {{ form.submit(class="button button-submit") }}
+            </div>
+        </section>
+        </form>
     </div>
 {% endblock %}

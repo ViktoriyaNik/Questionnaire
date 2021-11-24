@@ -73,11 +73,20 @@ def save_test_to_db(form):
 
 
 @app.route('/tests')
-@app.route('/tests/<test_id>')
+@app.route('/tests/<test_id>', methods=['POST', 'GET'])
 def tests(test_id=None):
     if  test_id:
         print()
         form, test_db = load_get_tested_form_from_db(test_id)
+        if form.validate_on_submit():
+            print('Form is validated...')
+        #else:
+        print(form.errors)
+
+        answers = []
+        for question in form.questions:
+            for answer in question.answers.variants:
+                print(answer.data)
 
         return render_template('test.html', form=form, test_db=test_db)
     else:

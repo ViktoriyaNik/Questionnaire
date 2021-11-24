@@ -75,19 +75,20 @@ class CreateTestForm(FlaskForm):
         self.questions.append_entry(question_block)
 
 
-class TextAnswerForm(FlaskForm):
-    variants = FieldList(TextAreaField())
+class ChoiceAnswerForm(FlaskForm):
+    fld = RadioField(choices=[])
+    variants = FieldList(fld)
+
 
 class CheckAnswerForm(FlaskForm):
     variants = FieldList(BooleanField())
 
-class ChoiceAnswerForm(FlaskForm):
-    variants = FieldList(RadioField())
+
+class TextAnswerForm(FlaskForm):
+    variants = FieldList(TextAreaField())
+
 
 class GetTestedQuestionForm(FlaskForm):
-    pass
-
-    #answers = FieldList(FormField(ChoiceAnswerForm))
     @classmethod
     def append_field(cls, name, field):
         setattr(cls, name, field)
@@ -95,7 +96,8 @@ class GetTestedQuestionForm(FlaskForm):
 
 
 class GetTestedForm(FlaskForm):
-    questions = FieldList(FormField(GetTestedQuestionForm))
+    questions   = FieldList(FormField(GetTestedQuestionForm))
+    submit      = SubmitField("Отправить")
 
 
 def load_get_tested_form_from_db(test_id: int):
@@ -118,25 +120,23 @@ def load_get_tested_form_from_db(test_id: int):
         question.title = question_db.title
         question.type = question_db.type
         question.text = question_db.text
+        print(question.type)
 
-        # GetTestedQuestionForm.answers = TextAnswerForm()
-        #
-        # question.answers.variants.append_entry().label = "pipidastr"
-        # question.answers.variants.append_entry().label = "pipidastr"
-        # print(question.answers.variants)
+        def set_variants():
+            for answer in question_db.answers:
+                question.answers.variants.append_entry().label = answer.value
 
-        if question_db.type.id == 1:
+        if question.type.id == 1:
             question.answers = ChoiceAnswerForm()
-        elif question_db.type.id == 2:
-            GetTestedQuestionForm.answers = CheckAnswerForm()
-        elif question_db.type.id == 3:
+            choice = question.answers.variants.append_entry()
+            for variant in question_db.answers:
+                choice.choices.append(variant.value)
+        elif question.type.id == 2:
+            question.answers = CheckAnswerForm()
+            set_variants()
+        elif question.type.id == 3:
             question.answers = TextAnswerForm()
-
-        for answer in question_db.answers:
-            question.answers.variants.append_entry().label = answer.value
-            print(answer.value)
-
-        print()
+            set_variants()
 
     return form, test_db
 

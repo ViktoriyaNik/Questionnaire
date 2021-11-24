@@ -1,0 +1,7 @@
+span.answer-type {
+    text-transform: lowercase;
+}
+
+.content-row input.button-submit {
+    width: 100%;
+}
