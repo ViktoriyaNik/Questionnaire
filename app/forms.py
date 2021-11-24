@@ -76,15 +76,18 @@ class CreateTestForm(FlaskForm):
 
 
 class TextAnswerForm(FlaskForm):
-    input = TextAreaField()
+    variants = FieldList(TextAreaField())
 
 class CheckAnswerForm(FlaskForm):
-    value = BooleanField()
+    variants = FieldList(BooleanField())
 
 class ChoiceAnswerForm(FlaskForm):
-    value = RadioField()
+    variants = FieldList(RadioField())
 
 class GetTestedQuestionForm(FlaskForm):
+    pass
+
+    #answers = FieldList(FormField(ChoiceAnswerForm))
     @classmethod
     def append_field(cls, name, field):
         setattr(cls, name, field)
@@ -107,7 +110,6 @@ def load_get_tested_form_from_db(test_id: int):
     form.author = test_db.author
     form.creation_date = test_db.creation_date
 
-
     for question_db in test_db.questions:
         # Чтобы поля класса не затирались (объект формы всегда приводится к определённому виду в методе append_entry())
         # необходимо либо добавлять объекты минуя этот метод, напрямую в entries, либо как здесь,
@@ -117,27 +119,24 @@ def load_get_tested_form_from_db(test_id: int):
         question.type = question_db.type
         question.text = question_db.text
 
-        GetTestedQuestionForm.answers = FieldList(FlaskForm(ChoiceAnswerForm))
-        question.answers.append_entry(FlaskForm(ChoiceAnswerForm('sdf')))
-        print(question.answers)
+        # GetTestedQuestionForm.answers = TextAnswerForm()
+        #
+        # question.answers.variants.append_entry().label = "pipidastr"
+        # question.answers.variants.append_entry().label = "pipidastr"
+        # print(question.answers.variants)
 
-        '''
         if question_db.type.id == 1:
-            print(question_db.type)
-            GetTestedQuestionForm.answers = FieldList(RadioField())
+            question.answers = ChoiceAnswerForm()
         elif question_db.type.id == 2:
-            print(question_db.type)
-            GetTestedQuestionForm.answers = FieldList(BooleanField())
-
+            GetTestedQuestionForm.answers = CheckAnswerForm()
         elif question_db.type.id == 3:
-            print(question_db.type)
-            GetTestedQuestionForm.answers = FieldList(TextAreaField())
-        for answer in question_db.answers:
-            question.answers.append_entry().label = answer.value
-        '''
+            question.answers = TextAnswerForm()
 
-        for answer in question.answers:
-            print(answer)
+        for answer in question_db.answers:
+            question.answers.variants.append_entry().label = answer.value
+            print(answer.value)
+
+        print()
 
     return form, test_db
 
