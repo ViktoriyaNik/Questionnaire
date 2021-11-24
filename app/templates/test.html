@@ -6,8 +6,30 @@
 
 {% block content %}
     <div class="content-block">
-        <div class="content-row">
-            <h1>{{test_id}}</h1>
-        </div>
+        <section class="test-block">
+            <h1>{{ form.title }}</h1>
+            <p>Автор теста: {{ form.author }}</p>
+            <p>Дата создания: {{ form.creation_date }}</p>
+        </section>
+        <section class="questions-block">
+            {% for question in form.questions %}
+            <div class="content-row">
+                <h1> {{ loop.index }}. {{ question.title }} </h1>
+                <p> {{ question.type.name }} </p>
+                {% if question.text %}
+                <p> {{ question.text }} </p>
+                {% endif %}
+            </div>
+            <ul class="answer-list">
+                {% for answer in question.answers %}
+                    <li class="answer-variant">
+                        <h2>{{ answer.label }}</h2>
+                        {# answer(class='input area') #}
+                        {{ answer() }}
+                    </li>
+                {% endfor %}
+            </ul>
+            {% endfor %}
+        </section>
     </div>
 {% endblock %}

@@ -1,12 +1,13 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField, TimeField,\
+from wtforms import StringField, TextAreaField, TimeField, \
     BooleanField, SubmitField, PasswordField, IntegerField, FieldList, \
-    FormField, SelectField, DateTimeField, DateField
+    FormField, SelectField, DateTimeField, DateField, RadioField, SelectMultipleField, Field
+from wtforms.fields.core import UnboundField
 
 from wtforms.validators import email, length, input_required, data_required
 
 from app import db
-from app.models import type_model
+from app.models import type_model, test_model
 from sqlalchemy import select, insert, update
 
 sess = db.session                       # Объект сессии бд
@@ -74,13 +75,71 @@ class CreateTestForm(FlaskForm):
         self.questions.append_entry(question_block)
 
 
-class GetTestedQuestionField(FlaskForm):
-    def __init__(self, question):
-        self.title      = question.title
-        self.answers    = FieldList(StringField(''))
+class TextAnswerForm(FlaskForm):
+    input = TextAreaField()
+
+class CheckAnswerForm(FlaskForm):
+    value = BooleanField()
+
+class ChoiceAnswerForm(FlaskForm):
+    value = RadioField()
+
+class GetTestedQuestionForm(FlaskForm):
+    @classmethod
+    def append_field(cls, name, field):
+        setattr(cls, name, field)
+        return cls
 
 
 class GetTestedForm(FlaskForm):
-    def __init__(self, test_db):
-        self.author = test_db.author
-        self.creation_date = test_db.creation_date
+    questions = FieldList(FormField(GetTestedQuestionForm))
+
+
+def load_get_tested_form_from_db(test_id: int):
+    sess = db.session
+    stmt = select(test_model).where(test_model.id == test_id)
+    resp = sess.execute(stmt).scalars().first()
+    test_db = resp
+
+    form = GetTestedForm()
+
+    form.title = test_db.title
+    form.author = test_db.author
+    form.creation_date = test_db.creation_date
+
+
+    for question_db in test_db.questions:
+        # Чтобы поля класса не затирались (объект формы всегда приводится к определённому виду в методе append_entry())
+        # необходимо либо добавлять объекты минуя этот метод, напрямую в entries, либо как здесь,
+        # добавляя свойства объекта после его добавления в форму
+        question = form.questions.append_entry()
+        question.title = question_db.title
+        question.type = question_db.type
+        question.text = question_db.text
+
+        GetTestedQuestionForm.answers = FieldList(FlaskForm(ChoiceAnswerForm))
+        question.answers.append_entry(FlaskForm(ChoiceAnswerForm('sdf')))
+        print(question.answers)
+
+        '''
+        if question_db.type.id == 1:
+            print(question_db.type)
+            GetTestedQuestionForm.answers = FieldList(RadioField())
+        elif question_db.type.id == 2:
+            print(question_db.type)
+            GetTestedQuestionForm.answers = FieldList(BooleanField())
+
+        elif question_db.type.id == 3:
+            print(question_db.type)
+            GetTestedQuestionForm.answers = FieldList(TextAreaField())
+        for answer in question_db.answers:
+            question.answers.append_entry().label = answer.value
+        '''
+
+        for answer in question.answers:
+            print(answer)
+
+    return form, test_db
+
+
+
