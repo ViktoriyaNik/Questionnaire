@@ -7,16 +7,6 @@ li.list-row:hover a {
     color: var(--foreground-accent);
 }
 
-li.list-row {
-    border-bottom: 1px solid var(--page-layer-1);
-    transition: 0.3s ease-in-out;
-}
-
-li.list-row:last-child {
-    border-bottom: none;
-}
-
-
 li.list-row.test-row {
 
 }
