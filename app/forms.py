@@ -76,8 +76,7 @@ class CreateTestForm(FlaskForm):
 
 
 class ChoiceAnswerForm(FlaskForm):
-    fld = RadioField(choices=[])
-    variants = FieldList(fld)
+    variants = FieldList(RadioField(choices=[]))
 
 
 class CheckAnswerForm(FlaskForm):
@@ -88,7 +87,7 @@ class TextAnswerForm(FlaskForm):
     variants = FieldList(TextAreaField())
 
 
-class GetTestedQuestionForm(FlaskForm):
+class QuestionForm(FlaskForm):
     @classmethod
     def append_field(cls, name, field):
         setattr(cls, name, field)
@@ -96,7 +95,7 @@ class GetTestedQuestionForm(FlaskForm):
 
 
 class GetTestedForm(FlaskForm):
-    questions   = FieldList(FormField(GetTestedQuestionForm))
+    questions   = FieldList(FormField(QuestionForm))
     submit      = SubmitField("Отправить")
 
 
@@ -116,27 +115,30 @@ def load_get_tested_form_from_db(test_id: int):
         # Чтобы поля класса не затирались (объект формы всегда приводится к определённому виду в методе append_entry())
         # необходимо либо добавлять объекты минуя этот метод, напрямую в entries, либо как здесь,
         # добавляя свойства объекта после его добавления в форму
+
+        # question = form.questions.append_entry()
+        # question.title = question_db.title
+        # question.type = question_db.type
+        # question.text = question_db.text
+        # print(question.type)
+
+        question = QuestionForm()
         question = form.questions.append_entry()
         question.title = question_db.title
-        question.type = question_db.type
+        question.answ_type = question_db.type
         question.text = question_db.text
-        print(question.type)
 
-        def set_variants():
+        if question.answ_type.id == 1:
+            choices = [answer for answer in question_db.answers]
+            question.answers = RadioField('Выбор одного', choices=choices)
+        elif question.answ_type.id == 2:
+            question.answers = FieldList(BooleanField('Выбор нескольких'))
             for answer in question_db.answers:
-                question.answers.variants.append_entry().label = answer.value
+                pass
+                #question.answers.append_entry().label = answer.value
+        elif question.answ_type.id == 3:
+            question.answers = TextAreaField()
 
-        if question.type.id == 1:
-            question.answers = ChoiceAnswerForm()
-            choice = question.answers.variants.append_entry()
-            for variant in question_db.answers:
-                choice.choices.append(variant.value)
-        elif question.type.id == 2:
-            question.answers = CheckAnswerForm()
-            set_variants()
-        elif question.type.id == 3:
-            question.answers = TextAnswerForm()
-            set_variants()
 
     return form, test_db
 

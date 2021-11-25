@@ -14,25 +14,27 @@
             </div>
         </section>
         <form action="" method="POST">
+            {{ form.hidden_tag() }}
             <section class="questions-block">
             {% for question in form.questions %}
-                {% set type_id = question.type.id %}
+                {{ question.hidden_tag() }}
+                {% set type_id = question.answ_type.id %}
                 <div class="content-row">
-                    <h1> {{ loop.index }}. {{ question.title }} </h1>
+                    <h1> {{ loop.index }}. {{ question.label }} </h1>
                     {% if question.text %}
                     <p> {{ question.text }} </p>
                     {% endif %}
                     <p>
                         <strong>Тип ответа:</strong>
-                        <span class="answer-type">{{ question.type.name }}</span>
+                        <span class="answer-type">{{ question.answ_type.name }}</span>
                     </p>
                 </div>
                 {% if type_id == 1 %}
-                    {% set variant = question.answers.variants[0] %}
-                    {{ variant(class="content-row") }}
+                    {% set variant = question.answers %}
+                    {# variant(class="content-row") #}
                 {% elif type_id == 2 %}
                     <ul class="answer-list content-row">
-                        {% for variant in question.answers.variants %}
+                        {% for variant in question.answers %}
                             <li class="answer-variant">
                                 <h2>{{ variant.label }}</h2>
                                 {{ variant }}
@@ -41,7 +43,7 @@
                     </ul>
                 {% elif type_id == 3 %}
                     <ul class="answer-list content-row">
-                        {% for variant in question.answers.variants %}
+                        {% for variant in question.answers %}
                             <li class="answer-variant">
                                 <h2>{{ variant.label }}</h2>
                                 {{ variant(class="input area") }}
