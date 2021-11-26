@@ -75,72 +75,25 @@ class CreateTestForm(FlaskForm):
         self.questions.append_entry(question_block)
 
 
-class ChoiceAnswerForm(FlaskForm):
-    variants = FieldList(RadioField(choices=[]))
+class Answer:
+    def __init__(self, answer_db):
+        self.value = answer_db.value
 
 
-class CheckAnswerForm(FlaskForm):
-    variants = FieldList(BooleanField())
+class Question:
+    def __init__(self, question_db):
+        self.title = question_db.title
+        self.type = question_db.type
+        self.text = question_db.text
+
+        # Берёт все, не только которые были создыны автором TODO
+        self.answers = [Answer(answer_db) for answer_db in question_db.answers]
 
 
-class TextAnswerForm(FlaskForm):
-    variants = FieldList(TextAreaField())
+class Test:
+    def __init__(self, test_db):
+        self.title = test_db.title
+        self.author_name = test_db.author.name
+        self.creation_date = test_db.creation_date
 
-
-class QuestionForm(FlaskForm):
-    @classmethod
-    def append_field(cls, name, field):
-        setattr(cls, name, field)
-        return cls
-
-
-class GetTestedForm(FlaskForm):
-    questions   = FieldList(FormField(QuestionForm))
-    submit      = SubmitField("Отправить")
-
-
-def load_get_tested_form_from_db(test_id: int):
-    sess = db.session
-    stmt = select(test_model).where(test_model.id == test_id)
-    resp = sess.execute(stmt).scalars().first()
-    test_db = resp
-
-    form = GetTestedForm()
-
-    form.title = test_db.title
-    form.author = test_db.author
-    form.creation_date = test_db.creation_date
-
-    for question_db in test_db.questions:
-        # Чтобы поля класса не затирались (объект формы всегда приводится к определённому виду в методе append_entry())
-        # необходимо либо добавлять объекты минуя этот метод, напрямую в entries, либо как здесь,
-        # добавляя свойства объекта после его добавления в форму
-
-        # question = form.questions.append_entry()
-        # question.title = question_db.title
-        # question.type = question_db.type
-        # question.text = question_db.text
-        # print(question.type)
-
-        question = QuestionForm()
-        question = form.questions.append_entry()
-        question.title = question_db.title
-        question.answ_type = question_db.type
-        question.text = question_db.text
-
-        if question.answ_type.id == 1:
-            choices = [answer for answer in question_db.answers]
-            question.answers = RadioField('Выбор одного', choices=choices)
-        elif question.answ_type.id == 2:
-            question.answers = FieldList(BooleanField('Выбор нескольких'))
-            for answer in question_db.answers:
-                pass
-                #question.answers.append_entry().label = answer.value
-        elif question.answ_type.id == 3:
-            question.answers = TextAreaField()
-
-
-    return form, test_db
-
-
-
+        self.questions = [Question(question_db) for question_db in test_db.questions]
