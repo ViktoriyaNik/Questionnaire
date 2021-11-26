@@ -3,7 +3,7 @@ from flask import render_template, redirect, url_for, flash, request
 from werkzeug.security import generate_password_hash
 from flask_login import current_user, login_user, login_required, logout_user
 
-from app.forms import CreateTestForm, load_get_tested_form_from_db
+from app.forms import CreateTestForm
 
 
 @app.route('/')
@@ -75,20 +75,18 @@ def save_test_to_db(form):
 @app.route('/tests')
 @app.route('/tests/<test_id>', methods=['POST', 'GET'])
 def tests(test_id=None):
+    from app.forms import Test
     if  test_id:
-        print()
-        form, test_db = load_get_tested_form_from_db(test_id)
-        if form.validate_on_submit():
-            print('Form is validated...')
-        else:
-            print(form.errors)
+        sess = db.session
+        stmt = select(test_model).where(test_model.id == test_id)
+        test_db = sess.execute(stmt).scalars().first()
+        form = Test(test_db)
 
-            answers = []
-            #for question in form.questions:
-            #    for answer in question.answers:
-            #        print(answer.data)
-
-        return render_template('test.html', form=form, test_db=test_db)
+        if request.form:
+            pass
+            for data in request.form:
+                print(data, request.form[data])
+        return render_template('test.html', form=form)
     else:
         sess = db.session
         stmt = select(test_model)

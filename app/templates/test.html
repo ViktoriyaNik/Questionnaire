@@ -9,44 +9,50 @@
         <section class="description-block">
             <div class="content-row">
                 <h1>{{ form.title }}</h1>
-                <p>Автор теста: {{ form.author }}</p>
+                <p>Автор теста: {{ form.author_name }}</p>
                 <p>Дата создания: {{ form.creation_date }}</p>
             </div>
         </section>
         <form action="" method="POST">
-            {{ form.hidden_tag() }}
+            
             <section class="questions-block">
             {% for question in form.questions %}
-                {{ question.hidden_tag() }}
-                {% set type_id = question.answ_type.id %}
+                
+                {% set type_id = question.type.id %}
                 <div class="content-row">
-                    <h1> {{ loop.index }}. {{ question.label }} </h1>
+                    {% set question_no = loop.index %}
+                    <h1> {{ question_no }}. {{ question.title }} </h1>
                     {% if question.text %}
                     <p> {{ question.text }} </p>
                     {% endif %}
                     <p>
                         <strong>Тип ответа:</strong>
-                        <span class="answer-type">{{ question.answ_type.name }}</span>
+                        <span class="answer-type">{{ question.type.name }}</span>
                     </p>
                 </div>
                 {% if type_id == 1 %}
-                    {% set variant = question.answers %}
-                    {# variant(class="content-row") #}
+                    <div>
+                        {% for choice in question.answers %}
+                            <input id="choice_{{question_no}}_{{loop.index}}" type="radio" name="choice_{{question_no}}" value="{{ choice.value }}">
+                            <label for="choice_{{question_no}}_{{loop.index}}">{{ choice.value }}</label>
+                        {% endfor %}
+                    </div>
+
                 {% elif type_id == 2 %}
                     <ul class="answer-list content-row">
-                        {% for variant in question.answers %}
+                        {% for answer in question.answers %}
                             <li class="answer-variant">
-                                <h2>{{ variant.label }}</h2>
-                                {{ variant }}
+                                <input id="checkbox_{{question_no}}_{{loop.index}}" type="checkbox" name="check_{{question_no}}_{{loop.index}}" value="{{ answer.value }}">
+                                <label for="checkbox_{{question_no}}_{{loop.index}}"> {{ answer.value }} </label>
                             </li>
                         {% endfor %}
                     </ul>
                 {% elif type_id == 3 %}
                     <ul class="answer-list content-row">
-                        {% for variant in question.answers %}
+                        {% for answer in question.answers %}
                             <li class="answer-variant">
-                                <h2>{{ variant.label }}</h2>
-                                {{ variant(class="input area") }}
+                                <h2><label for="text_{{question_no}}_{{loop.index}}">{{ answer.value }}</label></h2>
+                                <textarea id="text_{{question_no}}_{{loop.index}}" class="area input" rows="10" cols="30" name="text_{{question_no}}_{{loop.index}}" required></textarea>
                             </li>
                         {% endfor %}
                     </ul>
@@ -55,7 +61,7 @@
         </section>
             <section class="action-block">
             <div class="content-row">
-                {{ form.submit(class="button button-submit") }}
+                <input id="submit" name="submit" type="submit" value="Отправить" class="button-submit">
             </div>
         </section>
         </form>

@@ -24,7 +24,7 @@ class Question(db.Model):
     text        = db.Column(db.String(512))
 
     # Relationships
-    answers     = db.relationship('Answer', secondary=result, backref=db.backref('question', lazy='dynamic', cascade='all, delete'))
+    answers     = db.relationship('Answer', secondary=result, backref=db.backref('question', lazy='dynamic', cascade='all, delete'))  # TODO invalid cascade
 
 
 class Type(db.Model):
