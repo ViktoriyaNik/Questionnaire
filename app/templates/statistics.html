@@ -1,10 +1,48 @@
 {% extends 'base.html' %}
 
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/statistics.css') }}">
+{% endblock %}
+
 {% block content %}
-{% if test_id %}
-<h1>Статистика теста: {{ test_id }}</h1>
-{% else %}
-<h1>Тестовая статистика</h1>
-{% endif %}
+<script type="text/javascript">
+    function setRowValue(id, value) {
+        console.log(id, value);
+        var row = document.getElementById(id);
+        row.style.width = value + '%';
+    }
+
+    rows = [];
+    vals = [];
+    window.onload = function() {
+        for (let i = 0; i < rows.length; i++) {
+            setRowValue(rows[i], vals[i]);
+        }
+    }
+</script>
+<div class="content-block">
+    {% if test %}
+        {% include 'test_result.html' %}
+    {% else %}
+        <section class="statistics">
+            <ul class="answer-list">
+                {% for i in range(10) %}
+                {% set value = range(20, 91) | random %}
+                    <li class="answer-variant">
+                        <span class="stat-answer-title content-row">Вариант ответа {{loop.index}} <strong>({{value}}%)</strong></span>
+                        <div class="stat-row content-row">
+                            <div class="stat-row-background"></div>
+                            <div id="row{{loop.index}}" class="stat-row-foreground" style="width:2%;"></div>
+                            <script>
+                                rows.push("row{{loop.index}}");
+                                vals.push({{value}});
+                            </script>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        </section>
+    {% endif %}
+</div>
 {% include '/dev/indev.html' %}
 {% endblock %}

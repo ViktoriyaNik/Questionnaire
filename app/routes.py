@@ -129,4 +129,12 @@ def tests(test_id=None):
 @app.route('/statistics')
 @app.route('/statistics/<test_id>')
 def statistics(test_id=None):
-    return render_template('statistics.html', test_id=test_id)
+    from app.forms import Test
+    sess = db.session
+    if test_id:
+        stmt = select(test_model).where(test_model.id == test_id)
+        test_db = sess.execute(stmt).scalars().first()
+        test = Test(test_db, result=True)
+        return render_template('statistics.html', test=test)
+    else:
+        return render_template('statistics.html', test_id=test_id)

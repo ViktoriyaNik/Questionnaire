@@ -31,7 +31,7 @@ body {
     font-weight: 700;
 }
 
-.page a, p, span, strong, label {
+.page a, p, span, strong {
     font-family: Inter;
     font-size: 16px;
     font-weight: 300;
@@ -102,11 +102,12 @@ h1.logo span.color-accent {
 
 .page {
     z-index: 0;
-    height: 100%;
-    display: flex;
     flex-direction: row;
     justify-content: space-between;
     row-gap: 50px;
+    display: flex;
+
+    height: 100%;
 }
 
 .page-body {

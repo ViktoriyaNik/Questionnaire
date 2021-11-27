@@ -32,7 +32,7 @@
                     </p>
                 </div>
                 {% if type_id == 1 %}
-                    <ul>
+                    <ul class="answers-list content-row">
                         {% for choice in question.answers %}
                             <li class="answer-variant">
                                 <input id="{{ choice.html_id }}" type="radio" name="{{ choice.html_name }}" value="{{ choice.id }}">
@@ -51,14 +51,12 @@
                         {% endfor %}
                     </ul>
                 {% elif type_id == 3 %}
-                    <ul class="answer-list content-row">
+                    <div class="content-row">
                         {% for text in question.answers %}
-                            <li class="answer-variant">
-                                <h2><label for="{{ text.html_id }}">{{ text.value }}</label></h2>
-                                <textarea id="{{ text.html_id }}" class="area input" rows="10" cols="30" name="{{ text.html_name }}" required></textarea>
-                            </li>
+                            <h2><label for="{{ text.html_id }}">{{ text.value }}</label></h2>
+                            <textarea id="{{ text.html_id }}" class="area input" rows="10" cols="30" name="{{ text.html_name }}" required></textarea>
                         {% endfor %}
-                    </ul>
+                    </div>
                 {% endif %}
             {% endfor %}
         </section>
