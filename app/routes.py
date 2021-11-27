@@ -1,3 +1,5 @@
+import datetime
+
 from app import app, db
 from flask import render_template, redirect, url_for, flash, request
 from werkzeug.security import generate_password_hash
@@ -15,8 +17,6 @@ def index():
 @app.route('/create', methods=['POST', 'GET'])
 def create():
     form = CreateTestForm()
-    print('Count of questions:', len(form.questions))
-    print('Count of variants in question 1:', len(form.questions[0].variants))
     if form.update_on_submit(): pass
     elif form.validate_on_submit():
         save_test_to_db(form)
@@ -24,24 +24,29 @@ def create():
     return render_template('create.html', form=form, errors=form.errors)
 
 
-from app.models import question_model, answer_model, test_model, type_model, user_model
+# Если такой пользователь существует, взять из бд, если нет - создать
+def create_user_if_not_exists(user_name: str, user_sex: str, user_birth: datetime.date, sess=db.session):
+    if sess.query(exists().where(user_model.name == user_name)).scalar():
+        stmt = select(user_model).where(user_model.name == user_name)
+        author_db = sess.execute(stmt).scalar()
+    else:
+        author_db = user_model(name=user_name, sex=user_sex, date_of_birth=user_birth)
+        sess.add(author_db)
+        sess.commit()
+    return author_db
+
+
+from app.models import question_model, answer_model, test_model, type_model, user_model, result_model
 from sqlalchemy import insert, select, exists
 def save_test_to_db(form):
     sess = db.session
     #try:
     test_title      = form.title.data
-    author_name     = form.author_name.data
-    author_sex      = form.author_sex.data
-    author_birth    = form.author_birth.data
+    author_name     = form.author.username.data
+    author_sex      = form.author.sex.data
+    author_birth    = form.author.birth.data
 
-    # Если такой пользователь существует, взять из бд, если нет - создать
-    if sess.query(exists().where(user_model.name == author_name)).scalar():
-        stmt        = select(user_model).where(user_model.name == author_name)
-        author_db   = sess.execute(stmt).scalar()
-    else:
-        author_db = user_model(name=author_name, sex=author_sex, date_of_birth=author_birth)
-        sess.add(author_db)
-        sess.commit()
+    author_db = create_user_if_not_exists(author_name, author_sex, author_birth, sess)
 
     test_db = test_model(title=test_title, author=author_db)
 
@@ -76,17 +81,41 @@ def save_test_to_db(form):
 @app.route('/tests/<test_id>', methods=['POST', 'GET'])
 def tests(test_id=None):
     from app.forms import Test
+
     if  test_id:
         sess = db.session
         stmt = select(test_model).where(test_model.id == test_id)
         test_db = sess.execute(stmt).scalars().first()
-        form = Test(test_db)
+        test = Test(test_db)
 
-        if request.form:
-            pass
-            for data in request.form:
-                print(data, request.form[data])
-        return render_template('test.html', form=form)
+        if request.method == 'POST':
+            user_db = create_user_if_not_exists('test_respondent', 'Mal', datetime.date(2000, 11, 11))
+            sess.add(user_db)
+            sess.commit()
+            for question in test.questions:
+                stmt = select(question_model).where(question_model.id == question.id)
+                question_db = sess.execute(stmt).scalars().first()
+                print('html_id:', question.html_id)
+                for answer in question.answers:
+                    # print('\thtml_id:', answer.html_id)
+                    print('\thtml_name:', answer.html_name)
+                    print('\tvalue:', answer.response)
+
+                    stmt = select(answer_model).where(answer_model.id == answer.id)
+                    answer_db = sess.execute(stmt).scalars().first()
+                    if answer.response:
+                        if question.type.id == 3:  # TODO Добавить возможность не отвечать в виде текста
+                            answer_db.count += 1
+                            answer_db = answer_model(question=question_db, value=answer.response, prepared=False)
+                            sess.add(answer_db)
+                            sess.commit()
+                        else:
+                            if int(answer.response) == int(answer_db.id):
+                                answer_db.count += 1
+                            sess.commit()
+                    user_db.answers.append(answer_db)
+
+        return render_template('test.html', test=test)
     else:
         sess = db.session
         stmt = select(test_model)
