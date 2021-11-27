@@ -1,0 +1,24 @@
+{% block result %}
+    <div class="content-block">
+        <section class="author-block">
+            <h1>{{ test.title }}</h1>
+            <p>
+                <strong>Имя автора: </strong> {{ test.author_name }} <br>
+                <strong>Дата создания: </strong> {{ test.creation_date }}
+            </p>
+        </section>
+        {% for question in test.questions %}
+            <section class="question-block">
+                <h2>{{ loop.index }}. {{ question.title }}</h2>
+                <p>
+                    <strong>Тип ответа: </strong> {{ question.type.name }}
+                </p>
+                {% if question.type == 3 %}
+
+                {% else %}
+
+                {% endif %}
+            </section>
+        {% endfor %}
+    </div>
+{% endblock %}

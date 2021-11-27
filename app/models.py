@@ -35,7 +35,6 @@ class Type(db.Model):
     max_variants    = db.Column(db.SmallInteger, nullable=False)
 
     # Relationships
-    # answers         = db.relationship('Answer', backref='type', cascade='all, delete')
     questions       = db.relationship('Question', backref='type', cascade='all, delete')
 
 

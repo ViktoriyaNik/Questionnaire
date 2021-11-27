@@ -103,18 +103,20 @@ class Answer:
 
 
 class Question:
-    def __init__(self, question_db, html_id: str):
-        self.html_id = html_id
-        self.id = question_db.id
-        self.title = question_db.title
-        self.type = question_db.type
-        self.text = question_db.text
+    def __init__(self, question_db, html_id: str, result=False):
+        self.html_id    = html_id
+        self.id         = question_db.id
+        self.title      = question_db.title
+        self.type       = question_db.type
+        self.text       = question_db.text
 
-        # Берёт все, не только которые были создыны автором TODO
-        prepared_db_answers = self.__get_prepared_db_answers__(question_db.answers)
+        if result:
+            answers = self.__get_user_db_answers__(question_db.answers)
+        else:
+            answers = self.__get_prepared_db_answers__(question_db.answers)
+
         self.answers = []
-        for i, answer_db in enumerate(prepared_db_answers):
-            cls = None
+        for i, answer_db in enumerate(answers):
             id_ = f'-{i}'
             if self.type.id == 1:
                 id_ = ''
@@ -128,6 +130,14 @@ class Question:
             self.answers.append(answer)
 
     @classmethod
+    def __get_user_db_answers__(cls, all_answers):
+        answers = []
+        for answer in all_answers:
+            if not answer.prepared:
+                answers.append(answer)
+        return answers
+
+    @classmethod
     def __get_prepared_db_answers__(cls, all_answers):
         answers = []
         for answer in all_answers:
@@ -137,16 +147,20 @@ class Question:
 
 
 class Test:
-    def __init__(self, test_db, html_id='test-0'):
-        from flask import request
-        self.html_id = html_id
-        self.title = test_db.title
-        self.author_name = test_db.author.name
-        self.creation_date = test_db.creation_date
+    def __init__(self, test_db, html_id='test-0', result=False):
 
-        self.username_input_label = 'Ваше имя'
-        self.username_input_html_id = f'{self.html_id}-username'
-        self.username = request.form.get(self.username_input_html_id)
+        self.html_id        = html_id
+        self.title          = test_db.title
+        self.author_name    = test_db.author.name
+        self.creation_date  = test_db.creation_date
 
-        self.questions = [Question(question_db, self.html_id + f'-question-{i}') for i, question_db in enumerate(test_db.questions)]
+        self.questions = [
+            Question(
+                question_db, self.html_id + f'-question-{i}', result=result
+            ) for i, question_db in enumerate(test_db.questions)
+        ]
 
+        # from flask import request
+        # self.username_input_label = 'Ваше имя'
+        # self.username_input_html_id = f'{self.html_id}-username'
+        # self.username = request.form.get(self.username_input_html_id)
