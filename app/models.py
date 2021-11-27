@@ -4,7 +4,6 @@ from datetime import *
 
 result = db.Table(
     'result',
-    db.Column('question_id', db.Integer, db.ForeignKey('question.id'), nullable=False),
     db.Column('answer_id', db.Integer, db.ForeignKey('answer.id'), nullable=False),
     db.Column('user_id', db.Integer, db.ForeignKey('user.id'))
 )
@@ -12,8 +11,10 @@ result = db.Table(
 
 class Answer(db.Model):
     id          = db.Column(db.Integer, nullable=False, primary_key=True, autoincrement=True)
+    question_id = db.Column(db.Integer, db.ForeignKey('question.id'), nullable=False)
     value       = db.Column(db.String(1024), nullable=False)
     prepared    = db.Column(db.Boolean, nullable=False)
+    count       = db.Column(db.Integer, nullable=False, default=0)
 
 
 class Question(db.Model):
@@ -24,7 +25,7 @@ class Question(db.Model):
     text        = db.Column(db.String(512))
 
     # Relationships
-    answers     = db.relationship('Answer', secondary=result, backref=db.backref('question', lazy='dynamic', cascade='all, delete'))  # TODO invalid cascade
+    answers     = db.relationship('Answer', backref='question', lazy='dynamic', cascade='all, delete')  # TODO invalid cascade
 
 
 class Type(db.Model):
@@ -47,7 +48,6 @@ class User(db.Model):
     # Relationships
     tests           = db.relationship('Test', backref='author', cascade='all, delete')
     answers         = db.relationship('Answer', secondary=result, backref=db.backref('user', cascade='all, delete'))
-    questions       = db.relationship('Question', secondary=result, backref=db.backref('user', cascade='all, delete'))
 
     @property
     def data(self):
@@ -77,3 +77,4 @@ user_model      = User
 type_model      = Type
 question_model  = Question
 answer_model    = Answer
+result_model    = result

@@ -1,22 +1,23 @@
 {% extends 'base.html' %}
-
-{% block head %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles/test.css') }}">
-{% endblock %}
-
+{% block head %}<link rel="stylesheet" href="{{ url_for('static', filename='styles/test.css') }}">{% endblock %}
 {% block content %}
     <div class="content-block">
         <section class="description-block">
             <div class="content-row">
-                <h1>{{ form.title }}</h1>
-                <p>Автор теста: {{ form.author_name }}</p>
-                <p>Дата создания: {{ form.creation_date }}</p>
+                <h1>{{ test.title }}</h1>
+                <p>Автор теста: {{ test.author_name }}</p>
+                <p>Дата создания: {{ test.creation_date }}</p>
             </div>
         </section>
         <form action="" method="POST">
-            
+            <!--
+            <section class="user-info">
+                <label for="{{ test.username_input_html_id }}">{{ test.username_input_label }}</label>
+                <input type="text" id="{{ test.username_input_html_id }}" name="{{ test.username_input_html_id }}" class="input" required>
+            </section>
+            -->
             <section class="questions-block">
-            {% for question in form.questions %}
+            {% for question in test.questions %}
                 
                 {% set type_id = question.type.id %}
                 <div class="content-row">
@@ -31,28 +32,30 @@
                     </p>
                 </div>
                 {% if type_id == 1 %}
-                    <div>
+                    <ul>
                         {% for choice in question.answers %}
-                            <input id="choice_{{question_no}}_{{loop.index}}" type="radio" name="choice_{{question_no}}" value="{{ choice.value }}">
-                            <label for="choice_{{question_no}}_{{loop.index}}">{{ choice.value }}</label>
+                            <li class="answer-variant">
+                                <input id="{{ choice.html_id }}" type="radio" name="{{ choice.html_name }}" value="{{ choice.id }}">
+                                <label for="{{ choice.html_id }}">{{ choice.value }}</label>
+                            </li>
                         {% endfor %}
-                    </div>
+                    </ul>
 
                 {% elif type_id == 2 %}
                     <ul class="answer-list content-row">
-                        {% for answer in question.answers %}
+                        {% for check in question.answers %}
                             <li class="answer-variant">
-                                <input id="checkbox_{{question_no}}_{{loop.index}}" type="checkbox" name="check_{{question_no}}_{{loop.index}}" value="{{ answer.value }}">
-                                <label for="checkbox_{{question_no}}_{{loop.index}}"> {{ answer.value }} </label>
+                                <input id="{{ check.html_id }}" type="checkbox" name="{{ check.html_name }}" value="{{ check.id }}">
+                                <label for="{{ check.html_id }}"> {{ check.value }} </label>
                             </li>
                         {% endfor %}
                     </ul>
                 {% elif type_id == 3 %}
                     <ul class="answer-list content-row">
-                        {% for answer in question.answers %}
+                        {% for text in question.answers %}
                             <li class="answer-variant">
-                                <h2><label for="text_{{question_no}}_{{loop.index}}">{{ answer.value }}</label></h2>
-                                <textarea id="text_{{question_no}}_{{loop.index}}" class="area input" rows="10" cols="30" name="text_{{question_no}}_{{loop.index}}" required></textarea>
+                                <h2><label for="{{ text.html_id }}">{{ text.value }}</label></h2>
+                                <textarea id="{{ text.html_id }}" class="area input" rows="10" cols="30" name="{{ text.html_name }}" required></textarea>
                             </li>
                         {% endfor %}
                     </ul>

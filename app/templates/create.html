@@ -32,27 +32,28 @@
                                         {% endif %}
                                     </div>
                                     <div class="content-row">
-                                        <h2>{{ form.author_name.label }}</h2>
-                                        {% set errors = form.author_name.errors %}
+                                        {{ form.author.hidden_tag() }}
+                                        <h2>{{ form.author.username.label }}</h2>
+                                        {% set errors = form.author.username.errors %}
                                         {% if errors %}
-                                            {{ form.author_name(class="input invalid") }}
+                                            {{ form.author.username(class="input invalid") }}
                                             {% include 'warning_pane.html' %}
                                         {% else %}
-                                            {{ form.author_name(class="input") }}
+                                            {{ form.author.username(class="input") }}
                                         {% endif %}
                                     </div>
                                     <div class="content-row">
-                                        <h2>{{ form.author_sex.label }}</h2>
-                                        {{ form.author_sex(class="input") }}
+                                        <h2>{{ form.author.sex.label }}</h2>
+                                        {{ form.author.sex(class="input") }}
                                     </div>
                                     <div class="content-row">
-                                        <h2>{{ form.author_birth.label }}</h2>
-                                        {% set errors = form.author_birth.errors %}
+                                        <h2>{{ form.author.birth.label }}</h2>
+                                        {% set errors = form.author.birth.errors %}
                                         {% if errors %}
-                                            {{ form.author_birth(class="input invalid") }}
+                                            {{ form.author.birth(class="input invalid") }}
                                             {% include 'warning_pane.html' %}
                                         {% else %}
-                                            {{ form.author_birth(class="input", placeholder="YYYY-MM-DD") }}
+                                            {{ form.author.birth(class="input", placeholder="YYYY-MM-DD") }}
                                         {% endif %}
                                     </div>
                                 </section>
