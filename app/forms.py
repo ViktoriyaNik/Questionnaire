@@ -159,8 +159,3 @@ class Test:
                 question_db, self.html_id + f'-question-{i}', result=result
             ) for i, question_db in enumerate(test_db.questions)
         ]
-
-        # from flask import request
-        # self.username_input_label = 'Ваше имя'
-        # self.username_input_html_id = f'{self.html_id}-username'
-        # self.username = request.form.get(self.username_input_html_id)

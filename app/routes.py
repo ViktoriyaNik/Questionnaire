@@ -82,7 +82,7 @@ def save_test_to_db(form):
 def tests(test_id=None):
     from app.forms import Test
 
-    if  test_id:
+    if test_id:
         sess = db.session
         stmt = select(test_model).where(test_model.id == test_id)
         test_db = sess.execute(stmt).scalars().first()
@@ -137,4 +137,5 @@ def statistics(test_id=None):
         test = Test(test_db, result=True)
         return render_template('statistics.html', test=test)
     else:
+
         return render_template('statistics.html', test_id=test_id)

@@ -9,6 +9,13 @@ result = db.Table(
 )
 
 
+class TestResult(db.Model):
+    id = db.Column(db.Integer, nullable=False, primary_key=True, autoincrement=True)
+    test_id = db.Column(db.Integer, db.ForeignKey('test.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    completion_datetime = db.Column(db.DateTime, nullable=False)
+
+
 class Answer(db.Model):
     id          = db.Column(db.Integer, nullable=False, primary_key=True, autoincrement=True)
     question_id = db.Column(db.Integer, db.ForeignKey('question.id'), nullable=False)
