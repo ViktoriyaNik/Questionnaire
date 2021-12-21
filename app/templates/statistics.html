@@ -21,9 +21,123 @@
     }
 </script>
 <div class="content-block">
-    {% if test %}
-        {% include 'test_result.html' %}
-    {% else %}
+    <h1>Статистика по всем тестам</h1>
+    {% set user = statistics_dto.respondents %}
+    {% set question = statistics_dto.tests.questions %}
+        <section class="users-sex">
+            <h2>Пользователи по половой принадлежности:</h2>
+            <div class="content-row">
+                <span class="stat-answer-title content-row">Всего пользователей: <strong>{{user.count}}</strong></span>
+                <span class="stat-answer-title content-row">Среди них женщин: <strong>{{user.fem_count}} ({{user.fem_percentage}}%)</strong></span>
+                <div class="stat-row content-row">
+                    <div class="stat-row-background"></div>
+                    <div id="fem-percentage" class="stat-row-foreground" style="width:2%;"></div>
+                    <script>
+                        rows.push("fem-percentage");
+                        vals.push({{user.fem_percentage}});
+                    </script>
+                </div>
+                <span class="stat-answer-title content-row">Среди них мужчин: <strong>{{user.mal_count}} ({{user.mal_percentage}}%)</strong></span>
+                <div class="stat-row content-row">
+                    <div class="stat-row-background"></div>
+                    <div id="mal-percentage" class="stat-row-foreground" style="width:2%;"></div>
+                    <script>
+                        rows.push("mal-percentage");
+                        vals.push({{user.mal_percentage}});
+                    </script>
+                </div>
+            </div>
+        </section>
+        <section class="users-age">
+            <h2>Пользователи по возростам:</h2>
+            <span class="stat-answer-title content-row">Стреди них 13-ти лет и младше: <strong>{{user.age_0_13_count}} ({{user.age_0_13_percentage}}%)</strong></span>
+            <div class="stat-row content-row">
+                <div class="stat-row-background"></div>
+                <div id="user-age-0-13-percentage" class="stat-row-foreground" style="width:2%;"></div>
+                <script>
+                    rows.push("user-age-0-13-percentage");
+                    vals.push({{user.age_0_13_percentage}});
+                </script>
+            </div>
+            <span class="stat-answer-title content-row">Стреди них от 14-ти лет до 20-ти: <strong>{{user.age_14_20_count}} ({{user.age_14_20_percentage}}%)</strong></span>
+            <div class="stat-row content-row">
+                <div class="stat-row-background"></div>
+                <div id="user-age-14-20-percentage" class="stat-row-foreground" style="width:2%;"></div>
+                <script>
+                    rows.push("user-age-14-20-percentage");
+                    vals.push({{user.age_14_20_percentage}});
+                </script>
+            </div>
+            <span class="stat-answer-title content-row">Стреди них от 21-го года до 35-ти: <strong>{{user.age_21_35_count}} ({{user.age_21_35_percentage}}%)</strong></span>
+            <div class="stat-row content-row">
+                <div class="stat-row-background"></div>
+                <div id="user-age-21-35-percentage" class="stat-row-foreground" style="width:2%;"></div>
+                <script>
+                    rows.push("user-age-21-35-percentage");
+                    vals.push({{user.age_21_35_percentage}});
+                </script>
+            </div>
+            <span class="stat-answer-title content-row">Стреди них от 36-ти лет до 50-ти: <strong>{{user.age_36_50_count}} ({{user.age_36_50_percentage}}%)</strong></span>
+            <div class="stat-row content-row">
+                <div class="stat-row-background"></div>
+                <div id="user-age-36-50-percentage" class="stat-row-foreground" style="width:2%;"></div>
+                <script>
+                    rows.push("user-age-36-50-percentage");
+                    vals.push({{user.age_36_50_percentage}});
+                </script>
+            </div>
+            <span class="stat-answer-title content-row">Стреди них от 51-го года до 70-ти: <strong>{{user.age_51_70_count}} ({{user.age_51_70_percentage}}%)</strong></span>
+            <div class="stat-row content-row">
+                <div class="stat-row-background"></div>
+                <div id="user-age-51-70-percentage" class="stat-row-foreground" style="width:2%;"></div>
+                <script>
+                    rows.push("user-age-51-70-percentage");
+                    vals.push({{user.age_51_70_percentage}});
+                </script>
+            </div>
+            <span class="stat-answer-title content-row">Стреди них старше 71-го: <strong>{{user.age_71_99_count}} ({{user.age_71_99_percentage}}%)</strong></span>
+            <div class="stat-row content-row">
+                <div class="stat-row-background"></div>
+                <div id="user-age-71-99-percentage" class="stat-row-foreground" style="width:2%;"></div>
+                <script>
+                    rows.push("user-age-71-99-percentage");
+                    vals.push({{user.age_71_99_percentage}});
+                </script>
+            </div>
+        </section>
+        <section class="questions-statistics">
+            <h2>Всего тестов создано: {{statistics_dto.tests.count}}</h2>
+            <span class="stat-answer-title content-row">Всего вопросов: <strong>{{question.count}}</strong>,<br>среди них:</span>
+            <h2>По типу вопросов:</h2>
+            <span class="stat-answer-title content-row">С выбором одного варианта ответа: <strong>{{question.one_choice_count}} ({{question.one_choice_percentage}}%)</strong></span>
+            <div class="stat-row content-row">
+                <div class="stat-row-background"></div>
+                <div id="question-one-choice-percentage" class="stat-row-foreground" style="width:2%;"></div>
+                <script>
+                    rows.push("question-one-choice-percentage");
+                    vals.push({{question.one_choice_percentage}});
+                </script>
+            </div>
+            <span class="stat-answer-title content-row">С выбором нескольких вариантов ответа: <strong>{{question.any_choices_count}} ({{question.any_choices_percentage}}%)</strong></span>
+            <div class="stat-row content-row">
+                <div class="stat-row-background"></div>
+                <div id="question-any-choices-percentage" class="stat-row-foreground" style="width:2%;"></div>
+                <script>
+                    rows.push("question-any-choices-percentage");
+                    vals.push({{question.any_choices_percentage}});
+                </script>
+            </div>
+            <span class="stat-answer-title content-row">С ответом в виде текста: <strong>{{question.text_answer_count}} ({{question.text_answer_percentage}}%)</strong></span>
+            <div class="stat-row content-row">
+                <div class="stat-row-background"></div>
+                <div id="question-text-answer-percentage" class="stat-row-foreground" style="width:2%;"></div>
+                <script>
+                    rows.push("question-text-answer-percentage");
+                    vals.push({{question.text_answer_percentage}});
+                </script>
+            </div>
+        </section>
+        <!--
         <section class="statistics">
             <ul class="answer-list">
                 {% for i in range(10) %}
@@ -42,7 +156,7 @@
                 {% endfor %}
             </ul>
         </section>
-    {% endif %}
+        -->
 </div>
 {% include '/dev/indev.html' %}
 {% endblock %}

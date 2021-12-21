@@ -13,6 +13,7 @@
     border: 1px solid var(--grayscale-1);
     box-shadow: 0 0 5px 0.5px var(--grayscale-0);
 }
+
 .stat-row.framed {
     padding: 2px;
 }

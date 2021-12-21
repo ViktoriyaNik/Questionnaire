@@ -6,6 +6,7 @@ from werkzeug.security import generate_password_hash
 from flask_login import current_user, login_user, login_required, logout_user
 
 from app.forms import CreateTestForm
+from app.data import *
 
 
 @app.route('/')
@@ -137,5 +138,5 @@ def statistics(test_id=None):
         test = Test(test_db, result=True)
         return render_template('statistics.html', test=test)
     else:
-
-        return render_template('statistics.html', test_id=test_id)
+        statistics_dto = get_general_statistics()
+        return render_template('statistics.html', statistics_dto=statistics_dto)
