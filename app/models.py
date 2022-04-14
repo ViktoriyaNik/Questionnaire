@@ -1,6 +1,14 @@
 from app import db
 from datetime import *
 
+__all__ = [
+    'test_model',
+    'user_model',
+    'type_model',
+    'question_model',
+    'answer_model',
+    'result_model'
+]
 
 result = db.Table(
     'result',
@@ -32,7 +40,8 @@ class Question(db.Model):
     text        = db.Column(db.String(512))
 
     # Relationships
-    answers     = db.relationship('Answer', backref='question', lazy='dynamic', cascade='all, delete')  # TODO invalid cascade
+    # TODO invalid cascade
+    answers     = db.relationship('Answer', backref='question', lazy='dynamic', cascade='all, delete')
 
 
 class Type(db.Model):

@@ -2,9 +2,6 @@ import datetime
 
 from app import app, db
 from flask import render_template, redirect, url_for, flash, request
-from werkzeug.security import generate_password_hash
-from flask_login import current_user, login_user, login_required, logout_user
-
 from app.forms import CreateTestForm
 from app.data import *
 
@@ -26,7 +23,7 @@ def create():
 
 
 # Если такой пользователь существует, взять из бд, если нет - создать
-def create_user_if_not_exists(user_name: str, user_sex: str, user_birth: datetime.date, sess=db.session):
+def create_user_if_not_exists(user_name: str, user_sex: str, user_birth, sess=db.session):
     if sess.query(exists().where(user_model.name == user_name)).scalar():
         stmt = select(user_model).where(user_model.name == user_name)
         author_db = sess.execute(stmt).scalar()

@@ -6,6 +6,19 @@ from datetime import date
 from decimal import Decimal
 
 
+__all__ = [
+    'UsersStatisticsData',
+    'QuestionsStatisticsData',
+    'AnswersStatisticsData',
+    'TestsStatisticsData',
+    'GeneralStatisticsData',
+    'get_users_statistics',
+    'get_question_statistics',
+    'get_answers_statistics',
+    'get_tests_statistics',
+    'get_general_statistics'
+    ]
+
 sess = db.session
 
 
