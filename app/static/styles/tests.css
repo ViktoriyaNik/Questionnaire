@@ -19,15 +19,26 @@ li.list-row.test-row h3.test-title {
 }
 
 .test-info {
-    float: right;
-    display: flex;
-    margin-left: auto;
+    display: grid;
+    grid-auto-flow: column;
+    row-gap: 5px;
 }
 
-.test-info > * {
-    margin-left: 50px;
-} .test-info *:first-child {margin-left: 0;}
+.test-description {
+    display: grid;
+    grid-template-columns: 50% auto;
+}
 
 .test-info p {
     color: var(--grayscale-2);
+}
+
+@media screen and (max-width: 1120px) {
+    .test-description {
+        display: grid;
+        grid-template-columns: 70% auto;
+    }
+    .test-info {
+        grid-auto-flow: row;
+    }
 }
