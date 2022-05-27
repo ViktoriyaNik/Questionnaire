@@ -12,14 +12,19 @@
 <body>
     <div class="page-wrapper">
         <header>
-            <div class="container vertical-align-wrapper">
+            <div id="headbar" class="container vertical-align-wrapper">
                 <div class="header-bar content vertical-align-outer">
+                    <div id="menu-button" class="vertical-align-inner" onclick="expandMenu()">
+                        <div class="menu-button-row"></div>
+                        <div class="menu-button-row"></div>
+                        <div class="menu-button-row"></div>
+                    </div>
                     <h1 class="logo vertical-align-inner">Опросник<span class="color-accent">.</span>ру</h1>
-                    <nav class="vertical-align-inner">
+                    <!--<nav id="header-menu" class="vertical-align-inner">
                         <a href="{{ url_for('create') }}" class="">Создать тест</a>
                         <a href="{{ url_for('tests') }}" class="">Все тесты</a>
                         <a href="{{ url_for('statistics') }}" class="">Статистика</a>
-                    </nav>
+                    </nav>-->
                 </div>
             </div>
         </header>
@@ -64,5 +69,11 @@
             </div>
         </div>
     </footer>
+    <script type="text/javascript">
+        function expandMenu() {
+            let el = document.getElementById('menu');
+            el.classList.toggle('expanded');
+        }
+    </script>
 </body>
 </html>
